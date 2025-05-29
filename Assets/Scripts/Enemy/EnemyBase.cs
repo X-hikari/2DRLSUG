@@ -7,8 +7,8 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("敌人属性")]
     [Tooltip("最大生命值")]
-    public int maxHP = 3;
-    private int currentHP;
+    public float maxHP = 3;
+    private float currentHP;
 
     [Tooltip("是否死亡后播放特效")]
     public bool playDeathEffect = false;
@@ -17,30 +17,24 @@ public class EnemyBase : MonoBehaviour
 
     void Awake()
     {
-        // 初始化当前血量
         currentHP = maxHP;
     }
 
     /// <summary>
     /// 受到伤害
     /// </summary>
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHP -= damage;
+        Debug.Log($"{gameObject.name} 受到 {damage} 点伤害，剩余生命 {currentHP}");
         if (currentHP <= 0)
             Die();
     }
 
-    /// <summary>
-    /// 死亡处理
-    /// </summary>
     private void Die()
     {
         if (playDeathEffect && deathEffectPrefab != null)
-        {
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-        }
-        // TODO: 可以在这里发送事件通知 GameManager 或加分
         Destroy(gameObject);
     }
 }

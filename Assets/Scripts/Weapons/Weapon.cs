@@ -1,37 +1,70 @@
 using UnityEngine;
+using System.Collections;
 
+[RequireComponent(typeof(Collider2D))]
 public class Weapon : MonoBehaviour
 {
-    [Tooltip("每秒最多寻找一次最近敌人，设0则每帧寻找")]
+    [Header("敌人检测")]
+    [Tooltip("每秒最多寻找一次最近敌人，设为0表示每帧寻找")]
     public float searchInterval = 0.1f;
-    [Tooltip("打上此Tag的物体才视为敌人")]
+    [Tooltip("敌人 Tag")]
     public string enemyTag = "Enemy";
 
-    [Header("自动计算旋转速度")]
-    [Tooltip("完成一次 360° 旋转所需时间（秒），脚本内部自动算角速度")]
+    [Header("旋转设置")]
+    [Tooltip("完成一次 360° 旋转所需时间（秒）")]
     public float rotationDuration = 0.2f;
 
-    private float rotationSpeed;   // 自动计算得到，单位：度/秒
+    [Header("攻击设置")]
+    [Tooltip("每次攻击之间的时间间隔")]
+    public float attackInterval = 0.6f;
+    [Tooltip("刺击距离")]
+    public float attackRange = 1.2f;
+    [Tooltip("刺击动作持续时间")]
+    public float stabDuration = 0.2f;
+
+    public float damage = 1;
+
+    private float rotationSpeed;
     private float searchTimer;
+    private float attackTimer;
+    private bool isStabbing = false;
+
+    private Collider2D weaponCollider;
+    private Vector3 originalLocalPosition;
 
     void Awake()
     {
-        // 计算角速度
-        if (rotationDuration > 0f)
-            rotationSpeed = 360f / rotationDuration;
-        else
-            rotationSpeed = 360f;  // 如果配置不合理，退回默认
-
+        // 角速度计算
+        rotationSpeed = rotationDuration > 0f ? 360f / rotationDuration : 360f;
         searchTimer = 0f;
+        attackTimer = 0f;
+
+        weaponCollider = GetComponent<Collider2D>();
+        if (weaponCollider == null)
+            Debug.LogError("请为武器添加一个 Collider2D！");
+
+        weaponCollider.enabled = false;
+        originalLocalPosition = transform.localPosition;
     }
 
     void Update()
     {
-        searchTimer -= Time.deltaTime;
+        float dt = Time.deltaTime;
+
+        // 自动瞄准
+        searchTimer -= dt;
         if (searchTimer <= 0f)
         {
             AimAtNearestEnemy();
             searchTimer = searchInterval;
+        }
+
+        // 控制攻击节奏
+        attackTimer -= dt;
+        if (attackTimer <= 0f)
+        {
+            StartCoroutine(Stab());
+            attackTimer = attackInterval;
         }
     }
 
@@ -53,19 +86,69 @@ public class Weapon : MonoBehaviour
                 closest = go.transform;
             }
         }
+
         if (closest == null) return;
 
-        // 目标角度
         Vector3 dir = (closest.position - myPos).normalized;
         float targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion currentRot = transform.rotation;
-        Quaternion targetRot = Quaternion.Euler(0, 0, targetAngle);
 
-        // 平滑旋转
+        Quaternion targetRot = Quaternion.Euler(0, 0, targetAngle);
         transform.rotation = Quaternion.RotateTowards(
-            currentRot,
+            transform.rotation,
             targetRot,
             rotationSpeed * Time.deltaTime
         );
+    }
+
+    IEnumerator Stab()
+    {
+        if (isStabbing) yield break;
+        isStabbing = true;
+
+        float half = stabDuration * 0.5f;
+        Vector3 orig = originalLocalPosition;
+        Vector3 offset = transform.right * attackRange;
+
+        float timer = 0f;
+        // —— 平滑刺出 ——
+        while (timer < half)
+        {
+            float t = timer / half;                                 // 0→1
+            transform.localPosition = Vector3.Lerp(orig, orig + offset, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        // 确保到位
+        transform.localPosition = orig + offset;
+        // 开启碰撞检测
+        weaponCollider.enabled = true;
+
+        // —— 平滑收回 ——
+        timer = 0f;
+        while (timer < half)
+        {
+            float t = timer / half;                                 // 0→1
+            transform.localPosition = Vector3.Lerp(orig + offset, orig, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        // 确保复位
+        transform.localPosition = orig;
+        weaponCollider.enabled = false;
+
+        isStabbing = false;
+    }
+
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag(enemyTag)) return;
+
+        // 尝试获取 EnemyBase 并调用受伤
+        EnemyBase enemy = other.GetComponent<EnemyBase>();
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage);
+        }
     }
 }
