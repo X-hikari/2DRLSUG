@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // 初始化全局数据、UI、加载主场景等
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
