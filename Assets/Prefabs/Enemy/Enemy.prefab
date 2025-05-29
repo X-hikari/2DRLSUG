@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 6190287429819944822}
   - component: {fileID: 4447386298295378341}
   - component: {fileID: 9162056124060911981}
+  - component: {fileID: -1977784844592914136}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,6 +113,21 @@ MonoBehaviour:
   maxHP: 3
   playDeathEffect: 0
   deathEffectPrefab: {fileID: 0}
+--- !u!114 &-1977784844592914136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7280260357246223254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8367d5664cb0e54ab77f1d20de634ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRadius: 8
+  moveSpeed: 2
+  stopDistance: 1
 --- !u!1 &9152932835220203518
 GameObject:
   m_ObjectHideFlags: 0
