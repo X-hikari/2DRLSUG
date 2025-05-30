@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7280260357246223254
+--- !u!1 &6658117514032043720
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,16 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 945513747248852408}
   - component: {fileID: 6190287429819944822}
   - component: {fileID: 4447386298295378341}
   - component: {fileID: 9162056124060911981}
   - component: {fileID: -1977784844592914136}
+=======
+  - component: {fileID: 1999650603763284387}
+  - component: {fileID: 5127766597533891382}
+>>>>>>> EnemyTest
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -20,13 +25,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &945513747248852408
+--- !u!4 &1999650603763284387
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7280260357246223254}
+  m_GameObject: {fileID: 6658117514032043720}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.43, y: -0.51, z: 0}
@@ -36,6 +41,7 @@ Transform:
   - {fileID: 7156105752293521497}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!50 &6190287429819944822
 Rigidbody2D:
   serializedVersion: 4
@@ -99,17 +105,21 @@ CircleCollider2D:
   serializedVersion: 2
   m_Radius: 0.25
 --- !u!114 &9162056124060911981
+=======
+--- !u!114 &5127766597533891382
+>>>>>>> EnemyTest
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7280260357246223254}
+  m_GameObject: {fileID: 6658117514032043720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ad27ff93244e34bb051be0290c7412, type: 3}
+  m_Script: {fileID: 11500000, guid: 2035153928075d241a3bba4c0c862959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   maxHP: 3
   playDeathEffect: 0
   deathEffectPrefab: {fileID: 0}
@@ -212,3 +222,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+=======
+  enemyId: 
+>>>>>>> EnemyTest
