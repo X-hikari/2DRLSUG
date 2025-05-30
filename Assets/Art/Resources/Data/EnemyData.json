@@ -13,7 +13,7 @@
   "skills": [
     {
       "name": "PoisonSpit",
-      "commands": ["damage:5", "dot:2,3"]
+      "commands": ["regenerate:20"]
     }
   ]
 }
