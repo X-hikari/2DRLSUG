@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
 
     private int currentFrame = 0;
     private float frameTimer = 0f;
-    private float frameRate = 0.1f;
+    private readonly float frameRate = 0.1f;
     private string currentAnimation = "idle";
 
     private EnemyState currentState = EnemyState.Idle;
@@ -38,6 +38,16 @@ public class Enemy : MonoBehaviour
         TextAsset json = Resources.Load<TextAsset>("Data/EnemyData");
         enemyData = JsonConvert.DeserializeObject<EnemyData>(json.text);
         currentHp = enemyData.hp;
+
+        // 设置 Enemy 图层
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
+
+        // 添加碰撞器（如果没有）
+        if (GetComponent<Collider2D>() == null)
+        {
+            var collider = gameObject.AddComponent<BoxCollider2D>();
+            collider.isTrigger = true;
+        }
 
         // 2. 加载精灵图和动画帧
         Sprite[] allSprites = Resources.LoadAll<Sprite>(enemyData.spriteSheet);

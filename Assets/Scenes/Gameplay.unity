@@ -288,7 +288,7 @@ MonoBehaviour:
   spawnTilemap: {fileID: 1649720704}
   enemyPrefabs:
   - {fileID: 1641898047}
-  spawnInterval: 2
+  spawnInterval: 0.5
   minDistanceFromPlayer: 1
 --- !u!4 &1968045642
 Transform:

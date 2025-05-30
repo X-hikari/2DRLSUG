@@ -1,7 +1,7 @@
 {
   "id": "enemy_002",
   "name": "Kobold",
-  "hp": 100,
+  "hp": 3,
   "attack": 10,
   "spriteSheet": "Sprites/Enemy/Enemy2",
   "animations": {
