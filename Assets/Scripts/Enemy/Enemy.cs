@@ -85,6 +85,7 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
             spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.sortingOrder = 1;
 
         // 4. 获取玩家对象
         player = GameObject.FindGameObjectWithTag("Player").transform;
