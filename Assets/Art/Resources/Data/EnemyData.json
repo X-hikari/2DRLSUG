@@ -15,5 +15,8 @@
       "name": "PoisonSpit",
       "commands": ["regenerate:20"]
     }
-  ]
+  ],
+  "attackType": "ranged",
+  "attackRange": 6.0,
+  "bulletSprites": ["Enemy2_43~Enemy2_50"]
 }

@@ -29,5 +29,10 @@ public class PlayerController : MonoBehaviour
         // 基于物理系统移动角色
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
+
+    public void TakeDamage(float dmg)
+    {
+        Debug.Log($"Player damge: {dmg}");
+    }
 }
 

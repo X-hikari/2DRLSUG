@@ -14,7 +14,9 @@ public enum EnemyState
 public class Enemy : MonoBehaviour
 {
     public string enemyId;
-    public string enemyTag = "Enemy";
+    // 公开子弹预制体引用，在编辑器拖入
+    public GameObject bulletPrefab;
+
     private EnemyData enemyData;
     private Dictionary<string, Sprite[]> animationClips;
     private SpriteRenderer spriteRenderer;
@@ -36,6 +38,11 @@ public class Enemy : MonoBehaviour
     {
         // 1. 加载 JSON 数据
         TextAsset json = Resources.Load<TextAsset>("Data/EnemyData");
+        if (json == null)
+        {
+            Debug.LogError("EnemyData JSON not found in Resources/Data/");
+            return;
+        }
         enemyData = JsonConvert.DeserializeObject<EnemyData>(json.text);
         currentHp = enemyData.hp;
 
@@ -93,8 +100,15 @@ public class Enemy : MonoBehaviour
         PlayAnimation("idle");
     }
 
+    // 攻击冷却时间（秒）
+    private float attackCooldown = 1f;
+    // 记录上一次攻击时间
+    private float lastAttackTime = -999f;
+
     void Update()
     {
+        if (enemyData == null) return;
+
         // 状态机控制
         float distance = Vector2.Distance(transform.position, player.position);
 
@@ -128,7 +142,15 @@ public class Enemy : MonoBehaviour
                 break;
 
             case EnemyState.Attack:
-                UseSkill(); // 或播放攻击动画等
+                if (enemyData.attackType == "ranged")
+                {
+                    // 判断是否达到冷却时间
+                    if (Time.time - lastAttackTime >= attackCooldown)
+                    {
+                        FireBulletAtPlayer();
+                        lastAttackTime = Time.time;
+                    }
+                }
                 break;
 
             case EnemyState.Die:
@@ -183,12 +205,59 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void UseSkill()
+    private void FireBulletAtPlayer()
     {
-        foreach (var skill in enemyData.skills)
+        if (bulletPrefab == null)
         {
-            // Debug.Log($"Using skill: {skill.name}");
-            SkillParser.Execute(skill.commands);
+            Debug.LogError("bulletPrefab 没有设置！");
+            return;
+        }
+
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            // 计算方向
+            Vector2 dir = (player.position - transform.position).normalized;
+
+            // 加载子弹帧图
+            List<Sprite> bulletSprites = new();
+            if (enemyData.bulletSprites != null && enemyData.bulletSprites.Count > 0)
+            {
+                Sprite[] allBulletSprites = Resources.LoadAll<Sprite>(enemyData.spriteSheet); // 同一图集
+                foreach (var frame in enemyData.bulletSprites)
+                {
+                    if (frame.Contains("~"))
+                    {
+                        string[] parts = frame.Split('~');
+                        string baseName = parts[0].Split('_')[0];
+                        int start = int.Parse(parts[0].Split('_')[1]);
+                        int end = int.Parse(parts[1].Split('_')[1]);
+
+                        for (int i = start; i <= end; i++)
+                        {
+                            string name = $"{baseName}_{i}";
+                            var sprite = allBulletSprites.FirstOrDefault(s => s.name == name);
+                            if (sprite != null)
+                                bulletSprites.Add(sprite);
+                        }
+                    }
+                    else
+                    {
+                        var sprite = allBulletSprites.FirstOrDefault(s => s.name == frame);
+                        if (sprite != null)
+                            bulletSprites.Add(sprite);
+                    }
+                }
+            }
+
+            bulletScript.Init(
+                bulletSprites,
+                enemyData.attack,
+                dir,
+                BulletFaction.Enemy
+            );
         }
     }
 
