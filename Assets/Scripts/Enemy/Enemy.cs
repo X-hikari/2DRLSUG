@@ -182,9 +182,10 @@ public class Enemy : MonoBehaviour
     }
 
     // Ê¾ÀıÊÜÉËº¯Êı
-    public void TakeDamage(int dmg)
+    public void TakeDamage(float dmg)
     {
-        currentHp -= dmg;
+        Debug.Log($"Damage: {dmg}, current hp: {currentHp}");
+        currentHp -= (int)dmg;
         if (currentHp < 0) currentHp = 0;
     }
 }

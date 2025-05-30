@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour
     [Tooltip("刺击动作持续时间")]
     public float stabDuration = 0.2f;
 
-    public float damage = 1;
+    public float damage = 30;
 
     private float rotationSpeed;
     private float searchTimer;
@@ -146,9 +146,6 @@ public class Weapon : MonoBehaviour
 
         // 尝试获取 EnemyBase 并调用受伤
         Enemy enemy = other.GetComponent<Enemy>();
-        // if (enemy != null)
-        // {
-        //     enemy.TakeDamage(damage);
-        // }
+        enemy?.TakeDamage(damage);
     }
 }
