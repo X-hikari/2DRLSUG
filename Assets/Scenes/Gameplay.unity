@@ -245,6 +245,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e08d2eb28e6d22043bd622da75c6486f, type: 3}
+--- !u!1 &1641898047 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 449576747840233407, guid: 2ef64efe176e9ac4bb0e29d70bbbf027, type: 3}
+  m_PrefabInstance: {fileID: 2255850503190193811}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1839735485 &1649720704 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 7564667270874536756, guid: e08d2eb28e6d22043bd622da75c6486f, type: 3}
@@ -280,14 +285,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2344d7a3512343458cbc266db0f1d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTilemap: {fileID: 0}
+  spawnTilemap: {fileID: 1649720704}
   enemyPrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  spawnInterval: 0.5
+  - {fileID: 1641898047}
+  spawnInterval: 2
   minDistanceFromPlayer: 1
 --- !u!4 &1968045642
 Transform:
@@ -559,6 +560,26 @@ PrefabInstance:
     - target: {fileID: 321592397342706005, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 476699940479662902, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 476699940479662902, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958230411214172916, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958230411214172916, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226672041428109747, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6345377107083403061, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
       propertyPath: m_Mass
