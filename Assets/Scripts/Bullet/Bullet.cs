@@ -75,10 +75,13 @@ public class Bullet : MonoBehaviour
         faction = bulletFaction;
         maxTravelDistance = maxDistance;
 
+        // 设置旋转朝向
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
+
         if (sprites != null && sprites.Count > 0)
         {
             spriteRenderer.sprite = sprites[0];
-            spriteRenderer.flipX = dir.x < 0;
         }
 
         startPosition = transform.position;

@@ -1,22 +1,46 @@
-{
-  "id": "enemy_002",
-  "name": "Kobold",
-  "hp": 3,
-  "attack": 10,
-  "spriteSheet": "Sprites/Enemy/Enemy2",
-  "animations": {
-    "idle": ["Enemy2_0"],
-    "walk": ["Enemy2_7~Enemy2_20"],
-    "attack": ["Enemy2_21~Enemy2_28"],
-    "die": ["Enemy2_37~Enemy2_42"]
+[
+  {
+    "id": "enemy_002",
+    "name": "Kobold",
+    "hp": 3,
+    "attack": 10,
+    "spriteSheet": "Sprites/Enemy/Enemy2",
+    "animations": {
+      "idle": ["Enemy2_0"],
+      "walk": ["Enemy2_7~Enemy2_20"],
+      "attack": ["Enemy2_21~Enemy2_28"],
+      "die": ["Enemy2_37~Enemy2_42"]
+    },
+    "skills": [
+      {
+        "name": "PoisonSpit",
+        "commands": ["regenerate:20"]
+      }
+    ],
+    "attackType": "ranged",
+    "attackRange": 1.5,
+    "bulletSprites": ["Enemy2_43~Enemy2_50"]
   },
-  "skills": [
-    {
-      "name": "PoisonSpit",
-      "commands": ["regenerate:20"]
-    }
-  ],
-  "attackType": "ranged",
-  "attackRange": 6.0,
-  "bulletSprites": ["Enemy2_43~Enemy2_50"]
-}
+  {
+    "id": "enemy_003",
+    "name": "Archer",
+    "hp": 3,
+    "attack": 8,
+    "spriteSheet": "Sprites/Enemy/Enemy3",
+    "animations": {
+      "idle": ["Enemy3_0"],
+      "walk": ["Enemy3_7~Enemy3_20"],
+      "attack": ["Enemy3_49~Enemy3_53"],
+      "die": ["Enemy3_81~Enemy3_86"]
+    },
+    "skills": [
+      {
+        "name": "PoisonSpit",
+        "commands": ["regenerate:20"]
+      }
+    ],
+    "attackType": "ranged",
+    "attackRange": 3.0,
+    "bulletSprites": ["Enemy3_93"]
+  }
+]

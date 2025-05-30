@@ -20,6 +20,14 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("生成时与玩家的最小距离")]
     public float minDistanceFromPlayer = 0f;
 
+    [Tooltip("通用敌人预制体")]
+    public GameObject enemyPrefab;
+
+    [Tooltip("可能生成的敌人 ID 列表")]
+    public List<string> enemyIdsToSpawn;
+
+    private List<GameObject> spawnedEnemies = new();
+
     // 缓存
     private float timer;
     private Transform playerTransform;
@@ -59,36 +67,53 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        // 随机选择一个敌人类型
-        var prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
-        if (prefab == null)
+        // 清理已经被销毁的敌人引用
+        spawnedEnemies.RemoveAll(e => e == null);
+
+        // 限制最多10个敌人
+        if (spawnedEnemies.Count >= 10)
+        {
+            Debug.Log("敌人数量已达到上限，暂不生成");
+            return;
+        }
+
+        if (enemyPrefab == null || enemyIdsToSpawn == null || enemyIdsToSpawn.Count == 0)
             return;
 
         const int maxAttempts = 20;
         for (int i = 0; i < maxAttempts; i++)
         {
-            // 在世界包围盒内做连续随机采样
             float x = Random.Range(worldBounds.min.x, worldBounds.max.x);
             float y = Random.Range(worldBounds.min.y, worldBounds.max.y);
-            Vector3 worldPos = new Vector3(x, y, 0f);
-
-            // 转成 Tilemap 的格子坐标并判断是否有 Tile
+            Vector3 worldPos = new(x, y, 0f);
             Vector3Int cell = spawnTilemap.WorldToCell(worldPos);
+
             if (!spawnTilemap.HasTile(cell))
                 continue;
 
-            // 确保与玩家保持最小距离
             if (playerTransform != null &&
                 Vector2.Distance(worldPos, playerTransform.position) < minDistanceFromPlayer)
                 continue;
 
-            // 通过所有检查，生成敌人
-            Instantiate(prefab, worldPos, Quaternion.identity);
+            // 随机选择 enemyId
+            string enemyId = enemyIdsToSpawn[Random.Range(0, enemyIdsToSpawn.Count)];
+
+            // 实例化通用敌人
+            GameObject enemy = Instantiate(enemyPrefab, worldPos, Quaternion.identity);
+
+            // 设置 enemyId
+            var enemyScript = enemy.GetComponent<Enemy>();
+            if (enemyScript != null)
+                enemyScript.enemyId = enemyId;
+            else
+                Debug.LogWarning("EnemyPrefab 上没有挂载 Enemy 脚本。");
+            
+            // 记录生成的敌人
+            spawnedEnemies.Add(enemy);
+
             return;
         }
 
-        // 如果多次尝试未找到合法点，则在玩家最远可行的格子中心生成（或者直接跳过/做回退逻辑）
-        // 这里示例简单跳过本次生成：
         Debug.LogWarning("EnemySpawner: 多次尝试后未找到合适刷怪点，本次跳过生成。");
     }
 

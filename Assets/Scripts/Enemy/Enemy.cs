@@ -43,8 +43,16 @@ public class Enemy : MonoBehaviour
             Debug.LogError("EnemyData JSON not found in Resources/Data/");
             return;
         }
-        enemyData = JsonConvert.DeserializeObject<EnemyData>(json.text);
+        List<EnemyData> allEnemies = JsonConvert.DeserializeObject<List<EnemyData>>(json.text);
+        enemyData = allEnemies.FirstOrDefault(e => e.id == enemyId);
+        if (enemyData == null)
+        {
+            return;
+        }
+
         currentHp = enemyData.hp;
+        attackRange = enemyData.attackRange;
+        detectRange = enemyData.attackRange * 2.0f; 
 
         // …Ë÷√ Enemy Õº≤„
         gameObject.layer = LayerMask.NameToLayer("Enemy");
@@ -155,7 +163,7 @@ public class Enemy : MonoBehaviour
 
             case EnemyState.Die:
                 // ≤•∑≈À¿Õˆ∂Øª≠ + —”≥Ÿœ˙ªŸ
-                Destroy(gameObject, 0.5f);
+                Destroy(gameObject, 1f);
                 break;
         }
 
