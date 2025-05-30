@@ -1,0 +1,19 @@
+{
+  "id": "enemy_002",
+  "name": "Kobold",
+  "hp": 100,
+  "attack": 10,
+  "spriteSheet": "Sprites/Enemy/Enemy2",
+  "animations": {
+    "idle": ["Enemy2_0"],
+    "walk": ["Enemy2_7~Enemy2_20"],
+    "attack": ["Enemy2_21~Enemy2_28"],
+    "die": ["Enemy2_37~Enemy2_42"]
+  },
+  "skills": [
+    {
+      "name": "PoisonSpit",
+      "commands": ["damage:5", "dot:2,3"]
+    }
+  ]
+}
