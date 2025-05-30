@@ -14,6 +14,7 @@ public enum EnemyState
 public class Enemy : MonoBehaviour
 {
     public string enemyId;
+    public string enemyTag = "Enemy";
     private EnemyData enemyData;
     private Dictionary<string, Sprite[]> animationClips;
     private SpriteRenderer spriteRenderer;

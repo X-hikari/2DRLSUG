@@ -145,10 +145,10 @@ public class Weapon : MonoBehaviour
         if (!other.CompareTag(enemyTag)) return;
 
         // 尝试获取 EnemyBase 并调用受伤
-        EnemyBase enemy = other.GetComponent<EnemyBase>();
-        if (enemy != null)
-        {
-            enemy.TakeDamage(damage);
-        }
+        Enemy enemy = other.GetComponent<Enemy>();
+        // if (enemy != null)
+        // {
+        //     enemy.TakeDamage(damage);
+        // }
     }
 }
