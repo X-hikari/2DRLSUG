@@ -31,8 +31,10 @@ public class Enemy : MonoBehaviour
     public float moveSpeed = 2f;
     public float detectRange = 5f;
     public float attackRange = 1f;
+    public float attackCooldown = 1f;
     private Transform player;
     private int currentHp;
+    // 攻击冷却时间（秒）
 
     void Start()
     {
@@ -52,7 +54,16 @@ public class Enemy : MonoBehaviour
 
         currentHp = enemyData.hp;
         attackRange = enemyData.attackRange;
-        detectRange = enemyData.attackRange * 2.0f; 
+        if (enemyData.attackType == "melee")
+        {
+            detectRange = enemyData.attackRange * 4.0f;
+        }
+        else if (enemyData.attackType == "ranged")
+        {
+            detectRange = enemyData.attackRange * 2.0f;
+        }
+        moveSpeed = enemyData.moveSpeed;
+        attackCooldown = enemyData.attackCooldown;
 
         // 设置 Enemy 图层
         gameObject.layer = LayerMask.NameToLayer("Enemy");
@@ -108,8 +119,6 @@ public class Enemy : MonoBehaviour
         PlayAnimation("idle");
     }
 
-    // 攻击冷却时间（秒）
-    private float attackCooldown = 1f;
     // 记录上一次攻击时间
     private float lastAttackTime = -999f;
 
@@ -158,6 +167,25 @@ public class Enemy : MonoBehaviour
                         FireBulletAtPlayer();
                         lastAttackTime = Time.time;
                     }
+                } else if (enemyData.attackType == "melee")
+                {
+                    if (Time.time - lastAttackTime >= attackCooldown)
+                    {
+                        // 近战攻击直接检测玩家距离和造成伤害
+                        if (Vector2.Distance(transform.position, player.position) <= attackRange)
+                        {
+                            // 播放攻击动画（已有PlayAnimation("attack")）
+                            // PlayAnimation("attack");
+
+                            var playerScript = player.GetComponent<PlayerController>()
+                                ?? player.GetComponentInParent<PlayerController>()
+                                ?? player.GetComponentInChildren<PlayerController>();
+
+                            playerScript?.TakeDamage(enemyData.attack);
+
+                            lastAttackTime = Time.time;
+                        }
+                    }
                 }
                 break;
 
@@ -175,6 +203,7 @@ public class Enemy : MonoBehaviour
             {
                 frameTimer = 0f;
                 currentFrame = (currentFrame + 1) % animationClips[currentAnimation].Length;
+
                 spriteRenderer.sprite = animationClips[currentAnimation][currentFrame];
             }
         }

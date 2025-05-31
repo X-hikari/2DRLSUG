@@ -287,8 +287,10 @@ MonoBehaviour:
   minDistanceFromPlayer: 1
   enemyPrefab: {fileID: 2021468385}
   enemyIdsToSpawn:
+  - enemy_001
   - enemy_002
   - enemy_003
+  - enemy_004
 --- !u!4 &1968045642
 Transform:
   m_ObjectHideFlags: 0
