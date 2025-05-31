@@ -73,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
         // 限制最多10个敌人
         if (spawnedEnemies.Count >= 10)
         {
-            Debug.Log("敌人数量已达到上限，暂不生成");
+            // Debug.Log("敌人数量已达到上限，暂不生成");
             return;
         }
 

@@ -1,17 +1,18 @@
 [
   {
     "id": "enemy_001",
-    "name": "SkeletonArcher",
-    "hp": 2,
-    "attack": 7,
-    "moveSpeed": 2.0,
-    "attackCooldown": 1.0,
+    "name": "Ninja",
+    "exp": 25,
+    "hp": 3,
+    "attack": 12,
+    "moveSpeed": 2.5,
+    "attackCooldown": 1.2,
     "spriteSheet": "Sprites/Enemy/Enemy1",
     "animations": {
-      "idle": ["Enemy1_0"],
-      "walk": ["Enemy1_7~Enemy1_19"],
-      "attack": ["Enemy1_20~Enemy1_24"],
-      "die": ["Enemy1_25~Enemy1_29"]
+      "idle": ["Enemy1_24"],
+      "walk": ["Enemy1_82~Enemy1_91"],
+      "attack": ["Enemy1_0~Enemy1_8"],
+      "die": ["Enemy1_180~Enemy1_189"]
     },
     "skills": [
       {
@@ -19,13 +20,14 @@
         "commands": ["regenerate:20"]
       }
     ],
-    "attackType": "ranged",
-    "attackRange": 2,
-    "bulletSprites": ["Enemy3_93"]
+    "attackType": "melee",
+    "attackRange": 1,
+    "bulletSprites": [""]
   },
   {
     "id": "enemy_002",
     "name": "Kobold",
+    "exp": 15,
     "hp": 3,
     "attack": 10,
     "moveSpeed": 2.0,
@@ -50,6 +52,7 @@
   {
     "id": "enemy_003",
     "name": "Archer",
+    "exp": 20,
     "hp": 3,
     "attack": 8,
     "moveSpeed": 1.8,
@@ -74,6 +77,7 @@
   {
     "id": "enemy_004",
     "name": "Berserker",
+    "exp": 30,
     "hp": 8,
     "attack": 10,
     "moveSpeed": 0.8,

@@ -1,38 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("移动属性")]
-    public float moveSpeed = 5f;
-
+    private Player player;
     private Rigidbody2D rb;
-    private Vector2 movement;
 
-    void Awake()
+    private void Awake()
     {
+        player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    public void HandleInput()
     {
-        // 获取水平和垂直轴输入（WASD / 方向键）
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        movement = movement.normalized;  // 防止对角线速度过快
-    }
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        player.moveInput = input;
 
-    void FixedUpdate()
-    {
-        // 基于物理系统移动角色
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-    }
+        if (input != Vector2.zero)
+        {
+            player.lastMoveDir = input;
+        }
 
-    public void TakeDamage(float dmg)
-    {
-        Debug.Log($"Player damge: {dmg}");
+        rb.velocity = input * player.moveSpeed;
     }
 }
-

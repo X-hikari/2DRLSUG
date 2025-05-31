@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using UnityEditor.Build;
 
 public enum EnemyState
 {
@@ -33,8 +34,9 @@ public class Enemy : MonoBehaviour
     public float attackRange = 1f;
     public float attackCooldown = 1f;
     private Transform player;
+    private Player playerScript;
     private int currentHp;
-    // 攻击冷却时间（秒）
+    private bool isDead = false;
 
     void Start()
     {
@@ -115,6 +117,9 @@ public class Enemy : MonoBehaviour
 
         // 4. 获取玩家对象
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerScript = player.GetComponent<Player>()
+                        ?? player.GetComponentInParent<Player>()
+                        ?? player.GetComponentInChildren<Player>();
 
         PlayAnimation("idle");
     }
@@ -177,9 +182,9 @@ public class Enemy : MonoBehaviour
                             // 播放攻击动画（已有PlayAnimation("attack")）
                             // PlayAnimation("attack");
 
-                            var playerScript = player.GetComponent<PlayerController>()
-                                ?? player.GetComponentInParent<PlayerController>()
-                                ?? player.GetComponentInChildren<PlayerController>();
+                            // var playerScript = player.GetComponent<Player>()
+                            //     ?? player.GetComponentInParent<Player>()
+                            //     ?? player.GetComponentInChildren<Player>();
 
                             playerScript?.TakeDamage(enemyData.attack);
 
@@ -192,6 +197,10 @@ public class Enemy : MonoBehaviour
             case EnemyState.Die:
                 // 播放死亡动画 + 延迟销毁
                 Destroy(gameObject, 1f);
+                // var playerScript = player.GetComponent<Player>();
+                if (isDead == false)
+                    playerScript.GainExp(enemyData.exp);
+                isDead = true;
                 break;
         }
 
@@ -301,7 +310,7 @@ public class Enemy : MonoBehaviour
     // 示例受伤函数
     public void TakeDamage(float dmg)
     {
-        Debug.Log($"Damage: {dmg}, current hp: {currentHp}");
+        // Debug.Log($"Damage: {dmg}, current hp: {currentHp}");
         currentHp -= (int)dmg;
         if (currentHp < 0) currentHp = 0;
     }

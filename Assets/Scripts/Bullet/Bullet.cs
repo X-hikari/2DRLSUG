@@ -91,7 +91,7 @@ public class Bullet : MonoBehaviour
     {
         if (faction == BulletFaction.Enemy && other.CompareTag("Player"))
         {
-            var player = other.GetComponent<PlayerController>();
+            var player = other.GetComponent<Player>();
             player?.TakeDamage(damage);
             Destroy(gameObject);
         }

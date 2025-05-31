@@ -13,6 +13,7 @@ public class EnemyData
 {
     public string id;
     public string name;
+    public int exp;
     public int hp;
     public int attack;
     public float moveSpeed;
