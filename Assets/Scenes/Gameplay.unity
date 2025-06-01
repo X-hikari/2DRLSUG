@@ -183,23 +183,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3d31ce63f33af14a95543756bb1630f, type: 3}
---- !u!1 &263299503 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1958230411214172916, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
-  m_PrefabInstance: {fileID: 3404206810118339474}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &263299505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 263299503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 764a204cd36ad114e953923341e3137d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1055486911 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 41676735761086062, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
@@ -539,7 +522,7 @@ MonoBehaviour:
   - {fileID: 8364185246275497339, guid: 2ef64efe176e9ac4bb0e29d70bbbf027, type: 3}
   spawnInterval: 0.5
   minDistanceFromPlayer: 1
-  enemyPrefab: {fileID: 8364185246275497339, guid: 2ef64efe176e9ac4bb0e29d70bbbf027, type: 3}
+  enemyPrefab: {fileID: 8364185246275497339, guid: ca21ea1ef32b14146a3931fa9ccd989d, type: 3}
   enemyIdsToSpawn:
   - enemy_001
   - enemy_002
