@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using UnityEditor.Build;
 
 public enum EnemyState
 {
@@ -15,7 +14,6 @@ public enum EnemyState
 public class Enemy : MonoBehaviour
 {
     public string enemyId;
-    // 公开子弹预制体引用，在编辑器拖入
     public GameObject bulletPrefab;
 
     private EnemyData enemyData;
@@ -33,10 +31,13 @@ public class Enemy : MonoBehaviour
     public float detectRange = 5f;
     public float attackRange = 1f;
     public float attackCooldown = 1f;
+
     private Transform player;
     private Player playerScript;
+
     private int currentHp;
     private bool isDead = false;
+    private bool expGiven = false;
 
     void Start()
     {
@@ -51,6 +52,7 @@ public class Enemy : MonoBehaviour
         enemyData = allEnemies.FirstOrDefault(e => e.id == enemyId);
         if (enemyData == null)
         {
+            Debug.LogError($"EnemyData with id {enemyId} not found!");
             return;
         }
 
@@ -67,10 +69,8 @@ public class Enemy : MonoBehaviour
         moveSpeed = enemyData.moveSpeed;
         attackCooldown = enemyData.attackCooldown;
 
-        // 设置 Enemy 图层
         gameObject.layer = LayerMask.NameToLayer("Enemy");
 
-        // 添加碰撞器（如果没有）
         if (GetComponent<Collider2D>() == null)
         {
             var collider = gameObject.AddComponent<BoxCollider2D>();
@@ -109,36 +109,52 @@ public class Enemy : MonoBehaviour
             animationClips[anim.Key] = clip.ToArray();
         }
 
-        // 3. 添加 SpriteRenderer（防止重复添加）
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
             spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
 
-        // 4. 获取玩家对象
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        playerScript = player.GetComponent<Player>()
-                        ?? player.GetComponentInParent<Player>()
-                        ?? player.GetComponentInChildren<Player>();
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (player != null)
+        {
+            playerScript = player.GetComponent<Player>()
+                            ?? player.GetComponentInParent<Player>()
+                            ?? player.GetComponentInChildren<Player>();
+        }
 
         PlayAnimation("idle");
     }
 
-    // 记录上一次攻击时间
     private float lastAttackTime = -999f;
 
     void Update()
     {
         if (enemyData == null) return;
 
-        // 状态机控制
+        if (isDead)
+        {
+            AnimateCurrentAnimation();
+
+            // 播放死亡动画到最后一帧后1秒销毁物体
+            if (currentFrame == animationClips[currentAnimation].Length - 1)
+            {
+                Destroy(gameObject, 1f);
+            }
+            return; // 死亡时不执行其他逻辑
+        }
+
+        if (player != null)
+            spriteRenderer.flipX = (player.position.x < transform.position.x);
+
         float distance = Vector2.Distance(transform.position, player.position);
 
         if (currentHp <= 0)
         {
-            ChangeState(EnemyState.Die);
+            Die();
+            return;
         }
-        else if (distance <= attackRange)
+
+        if (distance <= attackRange)
         {
             ChangeState(EnemyState.Attack);
         }
@@ -151,68 +167,56 @@ public class Enemy : MonoBehaviour
             ChangeState(EnemyState.Idle);
         }
 
-        // 状态执行逻辑
         switch (currentState)
         {
             case EnemyState.Walk:
                 Vector2 dir = (player.position - transform.position).normalized;
-
-                // 朝向翻转
-                spriteRenderer.flipX = dir.x < 0;
-
                 transform.Translate(dir * moveSpeed * Time.deltaTime);
                 break;
 
             case EnemyState.Attack:
                 if (enemyData.attackType == "ranged")
                 {
-                    // 判断是否达到冷却时间
                     if (Time.time - lastAttackTime >= attackCooldown)
                     {
                         FireBulletAtPlayer();
                         lastAttackTime = Time.time;
                     }
-                } else if (enemyData.attackType == "melee")
+                }
+                else if (enemyData.attackType == "melee")
                 {
-                    if (Time.time - lastAttackTime >= attackCooldown)
+                    if (Time.time - lastAttackTime >= attackCooldown && distance <= attackRange)
                     {
-                        // 近战攻击直接检测玩家距离和造成伤害
-                        if (Vector2.Distance(transform.position, player.position) <= attackRange)
-                        {
-                            // 播放攻击动画（已有PlayAnimation("attack")）
-                            // PlayAnimation("attack");
-
-                            // var playerScript = player.GetComponent<Player>()
-                            //     ?? player.GetComponentInParent<Player>()
-                            //     ?? player.GetComponentInChildren<Player>();
-
-                            playerScript?.TakeDamage(enemyData.attack);
-
-                            lastAttackTime = Time.time;
-                        }
+                        playerScript?.TakeDamage(enemyData.attack);
+                        lastAttackTime = Time.time;
                     }
                 }
                 break;
-
-            case EnemyState.Die:
-                // 播放死亡动画 + 延迟销毁
-                Destroy(gameObject, 1f);
-                // var playerScript = player.GetComponent<Player>();
-                if (isDead == false)
-                    playerScript.GainExp(enemyData.exp);
-                isDead = true;
-                break;
         }
 
-        // 动画播放
+        AnimateCurrentAnimation();
+    }
+
+    private void AnimateCurrentAnimation()
+    {
         if (animationClips.ContainsKey(currentAnimation))
         {
             frameTimer += Time.deltaTime;
             if (frameTimer >= frameRate)
             {
                 frameTimer = 0f;
-                currentFrame = (currentFrame + 1) % animationClips[currentAnimation].Length;
-
+                currentFrame++;
+                if (currentFrame >= animationClips[currentAnimation].Length)
+                {
+                    if (currentState == EnemyState.Die)
+                    {
+                        currentFrame = animationClips[currentAnimation].Length - 1; // 死亡动画停留在最后一帧
+                    }
+                    else
+                    {
+                        currentFrame = 0; // 其他动画循环
+                    }
+                }
                 spriteRenderer.sprite = animationClips[currentAnimation][currentFrame];
             }
         }
@@ -264,14 +268,12 @@ public class Enemy : MonoBehaviour
         Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
-            // 计算方向
             Vector2 dir = (player.position - transform.position).normalized;
 
-            // 加载子弹帧图
             List<Sprite> bulletSprites = new();
             if (enemyData.bulletSprites != null && enemyData.bulletSprites.Count > 0)
             {
-                Sprite[] allBulletSprites = Resources.LoadAll<Sprite>(enemyData.spriteSheet); // 同一图集
+                Sprite[] allBulletSprites = Resources.LoadAll<Sprite>(enemyData.spriteSheet);
                 foreach (var frame in enemyData.bulletSprites)
                 {
                     if (frame.Contains("~"))
@@ -307,11 +309,26 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 示例受伤函数
     public void TakeDamage(float dmg)
     {
-        // Debug.Log($"Damage: {dmg}, current hp: {currentHp}");
         currentHp -= (int)dmg;
         if (currentHp < 0) currentHp = 0;
+    }
+
+    private void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+        ChangeState(EnemyState.Die);
+
+        if (!expGiven)
+        {
+            playerScript?.GainExp(enemyData.exp);
+            expGiven = true;
+        }
+
+        currentFrame = 0;
+        frameTimer = 0f;
     }
 }

@@ -1,0 +1,23 @@
+using UnityEngine;
+
+/// <summary>
+/// 可复用的武器配置文件（用于所有武器）
+/// </summary>
+[CreateAssetMenu(fileName = "NewWeaponData", menuName = "Weapons/Weapon Data")]
+public class WeaponData : ScriptableObject
+{
+    [Header("基础信息")]
+    public string weaponName;
+    public Sprite icon;
+    public Sprite idleSprite; // 默认显示的 sprite
+
+    [Header("战斗属性")]
+    public int damage = 10;
+    public float attackInterval = 1f;
+    public float attackRange = 2f;
+    public float stabDuration = 1f;
+
+    [Header("动画与子弹")]
+    public RuntimeAnimatorController animationController; // 可选动画控制器
+    public GameObject projectilePrefab; // 子弹、回旋镖等投射物预制体
+}

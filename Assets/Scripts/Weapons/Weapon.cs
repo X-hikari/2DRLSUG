@@ -1,151 +1,154 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(Collider2D))]
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
-    [Header("敌人检测")]
-    [Tooltip("每秒最多寻找一次最近敌人，设为0表示每帧寻找")]
-    public float searchInterval = 0.1f;
-    [Tooltip("敌人 Tag")]
-    public string enemyTag = "Enemy";
+    [Header("基础属性")]
+    public WeaponData data;
 
     [Header("旋转设置")]
-    [Tooltip("完成一次 360° 旋转所需时间（秒）")]
-    public float rotationDuration = 0.2f;
+    public float rotateDuration = 2f; // 360° 所需时间
+
+    [Header("检测设置")]
+    public float detectionInterval = 1f;
+    public float detectionRange = 3f;
+    public string enemyTag = "Enemy";
 
     [Header("攻击设置")]
-    [Tooltip("每次攻击之间的时间间隔")]
-    public float attackInterval = 0.6f;
-    [Tooltip("刺击距离")]
-    public float attackRange = 1.2f;
-    [Tooltip("刺击动作持续时间")]
-    public float stabDuration = 0.2f;
+    public float attackCooldown = 0.5f;
 
-    public float damage = 30;
+    protected List<Transform> detectedEnemies = new();
+    protected float detectionTimer = 0f;
+    protected float rotationSpeed; // 角速度 (°/s)
 
-    private float rotationSpeed;
-    private float searchTimer;
-    private float attackTimer;
-    private bool isStabbing = false;
+    protected float attackCooldownTimer = 0f;
+    protected WeaponRenderer weaponRenderer;
 
-    private Collider2D weaponCollider;
-    private Vector3 originalLocalPosition;
+    protected Transform currentTarget = null;
 
-    void Awake()
+    protected virtual void Awake()
     {
-        // 角速度计算
-        rotationSpeed = rotationDuration > 0f ? 360f / rotationDuration : 360f;
-        searchTimer = 0f;
-        attackTimer = 0f;
+        weaponRenderer = GetComponent<WeaponRenderer>();
 
-        weaponCollider = GetComponent<Collider2D>();
-        if (weaponCollider == null)
-            Debug.LogError("请为武器添加一个 Collider2D！");
-
-        weaponCollider.enabled = false;
-        originalLocalPosition = transform.localPosition;
+        if (rotateDuration > 0)
+            rotationSpeed = 360f / rotateDuration;
     }
 
-    void Update()
+    protected virtual void Start()
     {
-        float dt = Time.deltaTime;
+        InitializeRenderer();
+    }
 
-        // 自动瞄准
-        searchTimer -= dt;
-        if (searchTimer <= 0f)
-        {
-            AimAtNearestEnemy();
-            searchTimer = searchInterval;
-        }
+    protected virtual void InitializeRenderer()
+    {
+        if (weaponRenderer == null)
+            weaponRenderer = GetComponent<WeaponRenderer>();
 
-        // 控制攻击节奏
-        attackTimer -= dt;
-        if (attackTimer <= 0f)
+        if (data != null && weaponRenderer != null)
         {
-            StartCoroutine(Stab());
-            attackTimer = attackInterval;
+            if (data.idleSprite != null)
+                weaponRenderer.SetSprite(data.idleSprite);
+
+            if (data.animationController != null)
+                weaponRenderer.SetAnimatorController(data.animationController);
         }
     }
 
-    void AimAtNearestEnemy()
+    protected virtual void Update()
     {
-        var enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-        if (enemies.Length == 0) return;
+        attackCooldownTimer -= Time.deltaTime;
 
-        Transform closest = null;
-        float minDist = float.MaxValue;
-        Vector3 myPos = transform.position;
-
-        foreach (var go in enemies)
+        detectionTimer += Time.deltaTime;
+        if (detectionTimer >= detectionInterval)
         {
-            float d = (go.transform.position - myPos).sqrMagnitude;
-            if (d < minDist)
+            detectionTimer = 0f;
+            DetectEnemies();
+        }
+
+        if (detectedEnemies.Count > 0)
+        {
+            currentTarget = FindNearestEnemy();
+        }
+        else
+        {
+            currentTarget = null;
+        }
+
+        if (currentTarget != null)
+        {
+            Vector2 dir = (currentTarget.position - transform.position).normalized;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angle);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+
+            float angleDiff = Quaternion.Angle(transform.rotation, targetRotation);
+
+            if (angleDiff < 1f && attackCooldownTimer <= 0f)
             {
-                minDist = d;
-                closest = go.transform;
+                Attack(dir);
+                attackCooldownTimer = attackCooldown;
             }
         }
-
-        if (closest == null) return;
-
-        Vector3 dir = (closest.position - myPos).normalized;
-        float targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-        Quaternion targetRot = Quaternion.Euler(0, 0, targetAngle);
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            targetRot,
-            rotationSpeed * Time.deltaTime
-        );
+        else
+        {
+            // 没有目标，原地旋转
+            transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+        }
     }
 
-    IEnumerator Stab()
+    protected virtual void DetectEnemies()
     {
-        if (isStabbing) yield break;
-        isStabbing = true;
+        detectedEnemies.Clear();
 
-        float half = stabDuration * 0.5f;
-        Vector3 orig = originalLocalPosition;
-        Vector3 offset = transform.right * attackRange;
-
-        float timer = 0f;
-        // —— 平滑刺出 ——
-        while (timer < half)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+        foreach (var col in colliders)
         {
-            float t = timer / half;                                 // 0→1
-            transform.localPosition = Vector3.Lerp(orig, orig + offset, t);
-            timer += Time.deltaTime;
-            yield return null;
+            if (col.CompareTag(enemyTag))
+            {
+                detectedEnemies.Add(col.transform);
+            }
         }
-        // 确保到位
-        transform.localPosition = orig + offset;
-        // 开启碰撞检测
-        weaponCollider.enabled = true;
-
-        // —— 平滑收回 ——
-        timer = 0f;
-        while (timer < half)
-        {
-            float t = timer / half;                                 // 0→1
-            transform.localPosition = Vector3.Lerp(orig + offset, orig, t);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        // 确保复位
-        transform.localPosition = orig;
-        weaponCollider.enabled = false;
-
-        isStabbing = false;
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
+    protected Transform FindNearestEnemy()
     {
-        if (!other.CompareTag(enemyTag)) return;
+        Transform nearest = null;
+        float minDistSqr = Mathf.Infinity;
+        Vector3 pos = transform.position;
 
-        // 尝试获取 EnemyBase 并调用受伤
-        Enemy enemy = other.GetComponent<Enemy>();
-        enemy?.TakeDamage(damage);
+        // 过滤掉已被销毁的对象
+        detectedEnemies.RemoveAll(enemy => enemy == null);
+
+        foreach (var enemy in detectedEnemies)
+        {
+            if (enemy == null) continue;
+
+            float distSqr = (enemy.position - pos).sqrMagnitude;
+            if (distSqr < minDistSqr)
+            {
+                minDistSqr = distSqr;
+                nearest = enemy;
+            }
+        }
+        return nearest;
+    }
+
+    public abstract void Attack(Vector2 direction);
+
+    protected virtual void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+    }
+
+    public virtual void Initialize(WeaponData weaponData)
+    {
+        data = weaponData;
+        InitializeRenderer();
     }
 }
