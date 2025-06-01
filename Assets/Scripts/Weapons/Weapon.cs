@@ -50,7 +50,11 @@ public abstract class Weapon : MonoBehaviour
                 weaponRenderer.SetSprite(data.idleSprite);
 
             if (data.animationController != null)
-                weaponRenderer.SetAnimatorController(data.animationController);
+                weaponRenderer.SetAnimatorOverride(
+                    data.animationController,
+                    data.idleClip,
+                    data.attackClip
+                );
         }
     }
 

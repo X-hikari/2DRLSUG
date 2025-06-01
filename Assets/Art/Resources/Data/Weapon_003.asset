@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 206769491b7216d4dad91942005048a0, type: 3}
+  m_Name: Weapon_003
+  m_EditorClassIdentifier: 
+  weaponName: Weapon_003
+  icon: {fileID: 1328329040, guid: 3a8ca46d657d6404c9cb33a67809f421, type: 3}
+  idleSprite: {fileID: 1328329040, guid: 3a8ca46d657d6404c9cb33a67809f421, type: 3}
+  damage: 1
+  attackInterval: 1
+  attackRange: 2
+  stabDuration: 1
+  animationController: {fileID: 9100000, guid: aa67e406225718943841d07a4797c7b8, type: 2}
+  idleClip: {fileID: 7400000, guid: 1d818d27690d77240aee17ab4cb1b610, type: 2}
+  attackClip: {fileID: 7400000, guid: 10f5f261a6d591940b84504c8b93899a, type: 2}
+  projectilePrefab: {fileID: 1656401593959649422, guid: 3b81021419e8de742a226b22c6985568, type: 3}
+  bulletSprites:
+  - {fileID: -1494506395, guid: 55ba60cd5b02e81478ebf809faa56a08, type: 3}

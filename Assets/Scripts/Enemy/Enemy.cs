@@ -77,6 +77,16 @@ public class Enemy : MonoBehaviour
             collider.isTrigger = true;
         }
 
+         if (GetComponent<Rigidbody2D>() == null)
+        {
+            Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.simulated = true;
+            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+            rb.gravityScale = 0f;
+        }
+
         // 2. 加载精灵图和动画帧
         Sprite[] allSprites = Resources.LoadAll<Sprite>(enemyData.spriteSheet);
         animationClips = new Dictionary<string, Sprite[]>();

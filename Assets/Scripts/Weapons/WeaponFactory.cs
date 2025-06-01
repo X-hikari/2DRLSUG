@@ -45,8 +45,6 @@ public class WeaponFactory : MonoBehaviour
         if (prefab.data != null)
         {
             newWeapon.Initialize(prefab.data);
-            // newWeapon.transform.localPosition = Vector3.zero;  // 关键
-            // newWeapon.transform.localRotation = Quaternion.identity;  // 推荐重置旋转
         }
         else
         {

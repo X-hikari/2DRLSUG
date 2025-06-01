@@ -382,7 +382,7 @@ MonoBehaviour:
   lastMoveDir: {x: 0, y: 0}
   level: 1
   currentExp: 0
-  defaultWeaponName: Weapon_002
+  defaultWeaponName: Weapon_003
   weaponHoldPoint: {fileID: 1263145262}
   weapons:
   - {fileID: 0}
@@ -488,6 +488,7 @@ MonoBehaviour:
   weaponPrefabs:
   - {fileID: 9110832468711181195, guid: 25b3c7c57b24a204f9b0fb155d933c9d, type: 3}
   - {fileID: 6740243346908434678, guid: 10776e9666c83a14fbcee9632ca568f8, type: 3}
+  - {fileID: 740722745800406764, guid: cf6016b4f5bf01a499958efe4c0a700c, type: 3}
 --- !u!4 &1695418719
 Transform:
   m_ObjectHideFlags: 0

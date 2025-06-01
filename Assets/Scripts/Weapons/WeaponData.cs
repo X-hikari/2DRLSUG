@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -17,7 +18,13 @@ public class WeaponData : ScriptableObject
     public float attackRange = 2f;
     public float stabDuration = 1f;
 
-    [Header("动画与子弹")]
+
+    [Header("动画片段（用于覆盖默认 Animator）")]
     public RuntimeAnimatorController animationController; // 可选动画控制器
+    public AnimationClip idleClip;
+    public AnimationClip attackClip;
+
+    [Header("子弹")]
     public GameObject projectilePrefab; // 子弹、回旋镖等投射物预制体
+    public List<Sprite> bulletSprites;
 }

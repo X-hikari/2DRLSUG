@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
 
     public List<Sprite> animationSprites;
     public float frameRate = 0.1f;
-    public float maxTravelDistance = 20f;
+    public float maxTravelDistance = 8f;
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
