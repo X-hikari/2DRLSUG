@@ -8,4 +8,7 @@ public class PlayerStatsData : ScriptableObject
     public int baseAttack = 0;
     public int baseLevel = 1;
     public int baseExp = 0;
+    public string playerName;
+    public Sprite icon;
+    public Sprite idleSprite;
 }
