@@ -12,9 +12,7 @@ public enum PlayerAttribute {
 }
 
 public enum PlayerStatus {
-    Stun,
-    Silence,
-    Root,
+    Invisible,
     Invincible,
     // 其他状态...
 }

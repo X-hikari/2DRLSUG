@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     public BuffManager buffManager;
     public PlayerStats stats;
 
+    public PlayerStateManager stateManager;
+
     [HideInInspector] public Vector2 moveInput;
     [HideInInspector] public Vector2 lastMoveDir;
 
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
 
         buffManager = new BuffManager(this);
         stats = new PlayerStats(buffManager, playerStatsData);
+
+        stateManager = GetComponent<PlayerStateManager>();
 
         if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
         {
@@ -63,10 +67,20 @@ public class Player : MonoBehaviour
         // 测试buff
         if (Input.GetKeyDown(KeyCode.U))
         {
-            var moveSpeedBuff = new NumericBuff("增加伤害", PlayerAttribute.Attack, 2.0f, 10f);
-            buffManager.AddBuff(moveSpeedBuff);
-            Debug.Log("应用了一个 +2 人物伤害的 Buff，持续 10 秒！");
+            var invisibleBuff = new StatusBuff("隐身", PlayerStatus.Invisible, true, 10f);
+            buffManager.AddBuff(invisibleBuff);
+            Debug.Log("应用了一个隐身状态 Buff，持续 10 秒！");
         }
+    }
+
+    public void SetStatus(PlayerStatus status, bool value)
+    {
+        stateManager?.SetStatus(status, value);
+    }
+
+    public bool HasStatus(PlayerStatus status)
+    {
+        return stateManager != null && stateManager.HasStatus(status);
     }
 
     public void SwitchWeapon(int index)
@@ -105,6 +119,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (stateManager.IsInvincible) return ;
         bool isDead = stats.TakeDamage(damage);
         Debug.Log("Player HP: " + stats.currentHp);
 

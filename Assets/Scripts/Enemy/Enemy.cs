@@ -153,14 +153,21 @@ public class Enemy : MonoBehaviour
             return; // 死亡时不执行其他逻辑
         }
 
-        if (player != null)
-            spriteRenderer.flipX = (player.position.x < transform.position.x);
+        if (player != null && !playerScript.stateManager.IsInvisible)
+            spriteRenderer.flipX = player.position.x < transform.position.x;
 
         float distance = Vector2.Distance(transform.position, player.position);
 
         if (currentHp <= 0)
         {
             Die();
+            return;
+        }
+
+        if (playerScript != null && playerScript.stateManager.IsInvisible)
+        {
+            ChangeState(EnemyState.Idle);
+            AnimateCurrentAnimation();
             return;
         }
 
