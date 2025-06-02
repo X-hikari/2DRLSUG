@@ -8,6 +8,7 @@ public class BoomerangWeapon : Weapon
     private bool isStabbing = false;
     private Collider2D weaponCollider;
     private Vector3 originalLocalPosition;
+    private Player player;
 
     private HashSet<Enemy> hitEnemies = new(); // 当前阶段已命中的敌人
 
@@ -22,6 +23,7 @@ public class BoomerangWeapon : Weapon
         }
         weaponCollider.enabled = false;
         originalLocalPosition = transform.localPosition;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     public override void Attack(Vector2 direction)
@@ -87,7 +89,9 @@ public class BoomerangWeapon : Weapon
 
         if (!hitEnemies.Contains(enemy))
         {
-            enemy.TakeDamage(data.damage);
+            // Debug.Log($"data.damge: {data.damage}, playerAttack: {player.stats.Attack}");
+            float damge = data.damage + (float)player.stats.Attack;
+            enemy.TakeDamage(damge);
             hitEnemies.Add(enemy);
         }
     }

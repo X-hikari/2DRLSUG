@@ -6,6 +6,14 @@ using System.Collections.Generic;
 /// </summary>
 public class RangedWeapon : Weapon
 {
+    private Player player;
+
+     protected override void Awake()
+    {
+        base.Awake();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+    }
+
     public override void Attack(Vector2 direction)
     {
         // 发射子弹
@@ -33,10 +41,12 @@ public class RangedWeapon : Weapon
         {
             // 加载动画帧（如果你的 Bullet 支持帧动画渲染）
             List<Sprite> bulletSprites = data.bulletSprites;
+            // Debug.Log($"data.damge: {data.damage}, playerAttack: {player.stats.Attack}");
+            float damge = data.damage + (float)player.stats.Attack;
 
             bulletScript.Init(
                 bulletSprites,     // 帧动画（可为空）
-                data.damage,       // 伤害
+                damge,           // 伤害
                 direction.normalized,
                 BulletFaction.Friendly // 区分阵营
             );

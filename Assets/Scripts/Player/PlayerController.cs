@@ -21,6 +21,6 @@ public class PlayerController : MonoBehaviour
             player.lastMoveDir = input;
         }
 
-        rb.velocity = input * player.moveSpeed;
+        rb.velocity = input * player.stats.MoveSpeed;
     }
 }

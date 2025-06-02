@@ -576,11 +576,27 @@ PrefabInstance:
       objectReference: {fileID: 1263145262}
     - target: {fileID: 1926216373123065615, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
       propertyPath: defaultWeaponName
-      value: Weapon_001
+      value: Weapon_003
       objectReference: {fileID: 0}
     - target: {fileID: 1926216373123065615, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
       propertyPath: weapons.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958230411214172916, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 3883763814172483937, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6345377107083403061, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_Mass
+      value: 0.19634955
+      objectReference: {fileID: 0}
+    - target: {fileID: 8920852456590187663, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

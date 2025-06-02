@@ -7,6 +7,7 @@ public class MeleeWeapon : Weapon
     public float damageCooldown = 0.5f; // 对同一敌人造成伤害的最小时间间隔
 
     private Transform player;
+    private Player playerComponent;
     private Collider2D weaponCollider;
 
     private Dictionary<Enemy, float> lastDamageTime = new(); // 记录每个敌人上次被击中的时间
@@ -18,7 +19,9 @@ public class MeleeWeapon : Weapon
         weaponCollider = GetComponent<Collider2D>();
         weaponCollider.isTrigger = true;
 
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        GameObject playerOBJ = GameObject.FindGameObjectWithTag("Player");
+        player = playerOBJ?.transform;
+        playerComponent = playerOBJ?.GetComponent<Player>();
         if (player == null)
         {
             Debug.LogError("未找到带有 Player 标签的玩家对象！");
@@ -55,7 +58,9 @@ public class MeleeWeapon : Weapon
 
         if (CanDamage(enemy))
         {
-            enemy.TakeDamage(data.damage);
+            // Debug.Log($"data.damge: {data.damage}, playerAttack: {playerComponent.stats.Attack}");
+            float damge = data.damage + (float)playerComponent.stats.Attack;
+            enemy.TakeDamage(damge);
             lastDamageTime[enemy] = Time.time;
         }
     }
