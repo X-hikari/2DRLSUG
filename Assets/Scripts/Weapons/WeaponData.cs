@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 可复用的武器配置文件（用于所有武器）
 /// </summary>
-[CreateAssetMenu(fileName = "NewWeaponData", menuName = "Weapons/Weapon Data")]
+[CreateAssetMenu(fileName = "WeaponData", menuName = "Weapons/Weapon Data")]
 public class WeaponData : ScriptableObject
 {
     [Header("基础信息")]

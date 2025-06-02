@@ -571,6 +571,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1926216373123065615, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
+      propertyPath: playerStatsData
+      value: 
+      objectReference: {fileID: 11400000, guid: 57940edd9a07e5b43b25f2ca2171d809, type: 2}
+    - target: {fileID: 1926216373123065615, guid: 05f4d2a32d064054cbb19d000060f378, type: 3}
       propertyPath: weaponHoldPoint
       value: 
       objectReference: {fileID: 1263145262}

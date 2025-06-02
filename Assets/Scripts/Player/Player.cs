@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerRenderer))]
 public class Player : MonoBehaviour
 {
+    public PlayerStatsData playerStatsData;
     public BuffManager buffManager;
     public PlayerStats stats;
 
@@ -31,7 +32,7 @@ public class Player : MonoBehaviour
         weaponFactory = FindObjectOfType<WeaponFactory>();
 
         buffManager = new BuffManager(this);
-        stats = new PlayerStats(buffManager);
+        stats = new PlayerStats(buffManager, playerStatsData);
 
         if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
         {

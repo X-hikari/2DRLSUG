@@ -12,14 +12,12 @@ public class NumericBuff : BuffBase
 
     public override void OnApply(Player player)
     {
-        // 不再直接修改 PlayerStats，而是通过 BuffManager 实时叠加
         player.buffManager.AddNumericBuff(this);
     }
 
     public override void OnUpdate(float deltaTime, Player player)
     {
         base.OnUpdate(deltaTime, player);
-        // NumericBuff 无需每帧更新
     }
 
     public override void OnRemove(Player player)
