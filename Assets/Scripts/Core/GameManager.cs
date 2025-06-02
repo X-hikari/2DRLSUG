@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     {
         // 初始化全局数据、UI、加载主场景等
         Application.targetFrameRate = 60;
+        BuffConditionRegister.RegisterAll();
     }
 
     // Update is called once per frame

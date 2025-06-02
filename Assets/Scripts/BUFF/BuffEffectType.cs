@@ -4,10 +4,12 @@ public enum BuffEffectType {
     Trigger
 }
 
-public enum PlayerAttribute {
+public enum PlayerAttribute
+{
     Attack,
     MoveSpeed,
     MaxHealth,
+    HealthRegen,
     // 其他属性...
 }
 
