@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerRenderer))]
@@ -67,9 +69,29 @@ public class Player : MonoBehaviour
         // 测试buff
         if (Input.GetKeyDown(KeyCode.U))
         {
-            var invisibleBuff = new StatusBuff("隐身", PlayerStatus.Invisible, true, 10f);
-            buffManager.AddBuff(invisibleBuff);
-            Debug.Log("应用了一个隐身状态 Buff，持续 10 秒！");
+            static void addhealBuffEffect(Player player, object sender, EventArgs args)
+            {
+                var healBuff = new NumericBuff(
+                    "回血", PlayerAttribute.HealthRegen, 0, 60,
+                    5f,
+                    (dt, player) => {
+                        player.Heal(5);
+                });
+                player.buffManager.AddBuff(healBuff);
+                Debug.Log("触发：添加了持续回血Buff，持续60秒");
+            }
+
+            var triggerBuff = new TriggerBuff(
+                name: "击杀触发隐身",
+                type: BuffEffectType.Trigger,
+                duration: 60f,
+                eventName: "OnEnemyKilled",
+                eventType: EventType.OnEnemyKilled,
+                effect: addhealBuffEffect,
+                maxCount: -1);
+
+            buffManager.AddBuff(triggerBuff);
+            Debug.Log("应用了一个击杀敌人触发隐身的 TriggerBuff，持续60秒");
         }
     }
 
@@ -132,6 +154,7 @@ public class Player : MonoBehaviour
     public void Heal(int amount)
     {
         stats.Heal(amount);
+        Debug.Log($"回血: {amount}");
     }
 
     public void GainExp(int amount)
