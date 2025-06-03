@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         // 1. Мгди JSON Ъ§Он
-        TextAsset json = Resources.Load<TextAsset>("Data/EnemyData");
+        TextAsset json = Resources.Load<TextAsset>("Data/Enemys/EnemyData");
         if (json == null)
         {
             Debug.LogError("EnemyData JSON not found in Resources/Data/");

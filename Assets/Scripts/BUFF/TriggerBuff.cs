@@ -10,11 +10,11 @@ public class TriggerBuff : BuffBase
     private EventType eventType;
     private Action<Player, object, EventArgs> triggerEffect;
 
-    public TriggerBuff(string name, BuffEffectType type, float duration,
+    public TriggerBuff(string name, float duration,
                        string eventName, EventType eventType,
                        Action<Player, object, EventArgs> effect,
                        int maxCount = -1)
-        : base(name, type, duration)
+        : base(name, BuffEffectType.Trigger, duration)
     {
         this.eventName = eventName;
         this.eventType = eventType;

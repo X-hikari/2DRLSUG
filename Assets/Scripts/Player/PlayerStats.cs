@@ -11,6 +11,10 @@ public class PlayerStats
     public int level;
     public int currentExp;
 
+    public float maxMana = 100f;
+    public float currentMana = 100f;
+
+
     public PlayerStats(BuffManager buffManager, PlayerStatsData data)
     {
         this.buffManager = buffManager;

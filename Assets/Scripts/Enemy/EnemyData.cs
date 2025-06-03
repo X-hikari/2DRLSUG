@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class SkillData
+public class EnemySkillData
 {
     public string name;
     public List<string> commands;
@@ -20,7 +20,7 @@ public class EnemyData
     public float attackCooldown;
     public string spriteSheet;
     public Dictionary<string, List<string>> animations;
-    public List<SkillData> skills;
+    public List<EnemySkillData> skills;
     public string attackType; // "melee" 或 "ranged"
     public float attackRange; // 攻击距离
     public List<string> bulletSprites; // 子弹动画帧名（仅远程敌人需要）

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "Skill_001",
+    "name": "Attack Enhancement",
+    "cooldown": 60,
+    "manaCost": 15,
+    "category": "Buff",
+    "instructions": [
+      { 
+        "type": "Numeric", 
+        "param": "{\"name\": \"strong\", \"stat\": \"Attack\", \"value\": 2, \"duration\": 10 }" 
+      }
+    ]
+  },
+  {
+    "id": "Skill_002",
+    "name": "Recovery",
+    "cooldown": 60,
+    "manaCost": 0,
+    "category": "ownSkill",
+    "instructions": [
+      { 
+        "type": "Heal",
+        "param": "{\"value\", 1}"
+      }
+    ]
+  },
+  {
+    "id": "Skill_003",
+    "name": "Continuous Recovery",
+    "cooldown": 60,
+    "manaCost": 20,
+    "category": "Buff",
+    "instructions": [
+      { 
+        "type": "Numeric", 
+        "param": "{\"name\": \"resumption\", \"stat\": \"HealthRegen\", \"value\": 0, \"duration\": 30, \"periodicInterval\": 5, \"periodicAction\": \"Heal(5)\"}" 
+      }
+    ]
+  },
+  {
+    "id": "Skill_004",
+    "name": "Invulnerability",
+    "cooldown": 120,
+    "manaCost": 20,
+    "category": "Buff",
+    "instructions": [
+      { 
+        "type": "Status", 
+        "param": "{\"name\": \"invincibility\", \"status\": \"Invincible\", \"value\": \"True\", \"duration\": 5}" 
+      }
+    ]
+  },
+  {
+    "id": "Skill_005",
+    "name": "Bloodthirst",
+    "cooldown": 80,
+    "manaCost": 30,
+    "category": "Buff",
+    "instructions": [
+      { 
+        "type": "Trigger", 
+        "param": "{\"name\": \"suckBlood\", \"eventName\": \"OnEnemyKilled\", \"eventType\": \"OnEnemyKilled\", \"effect\": \"Skill_002\", \"maxCount\", -1}" 
+      }
+    ]
+  },
+  {
+    "id": "Skill_006",
+    "name": "DotDamge",
+    "cooldown": 80,
+    "manaCost": 40,
+    "category": "DirectDamage",
+    "instructions": [
+      { 
+        "type": "Damage", 
+        "param": "{\"enemy\": \"nearest\", \"value\": 5}" 
+      }
+    ]
+  }
+]
