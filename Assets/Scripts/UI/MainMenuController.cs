@@ -194,6 +194,7 @@ public class MainMenuController : MonoBehaviour
         {
             selectedWeapon = weaponList[currentWeaponIndex];
         }
+        GameManager.Instance.SelectedWeapon = selectedWeapon;
         weaponSelectPanel.SetActive(false);
         mainSelectPanel.SetActive(true);
 
@@ -210,6 +211,7 @@ public class MainMenuController : MonoBehaviour
         {
             selectedPlayer = playerList[currentPlayerIndex];
         }
+        GameManager.Instance.SelectedPlayer = selectedPlayer;
         charaSelectPanel.SetActive(false);
         mainSelectPanel.SetActive(true);
 
@@ -233,7 +235,7 @@ public class MainMenuController : MonoBehaviour
             return;
         }
         Debug.Log($"开始游戏，角色：{selectedPlayer.playerName}，武器：{selectedWeapon.weaponName}");
-        // SceneManager.LoadScene("Gameplay"); // 根据项目改为实际场景名
+         SceneManager.LoadScene("Gameplay"); // 根据项目改为实际场景名
     }
 
     // ============================
