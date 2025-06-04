@@ -130,7 +130,8 @@ public class MainMenuController : MonoBehaviour
     /// </summary>
     private void OnContinue()
     {
-        Debug.Log("Continue: …–Œ¥ µœ÷¥Êµµº”‘ÿ");
+        GameManager.Instance.LoadGame();
+        SceneManager.LoadScene("Gameplay");
     }
 
     /// <summary>

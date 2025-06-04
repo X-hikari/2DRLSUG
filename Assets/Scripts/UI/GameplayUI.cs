@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameplayUI : MonoBehaviour
 {
@@ -8,11 +9,23 @@ public class GameplayUI : MonoBehaviour
     public Slider hpSlider;
     public TextMeshProUGUI levelText;
     public Button pauseButton;
-    public GameObject pausePanel; // 可选：暂停界面
+
+    [Header("Pause Menu")]
+    public GameObject pausePanel;
+    public Button continueButton;
+    public Button mainMenuButton;
 
     private void Start()
     {
         pauseButton.onClick.AddListener(OnPauseClicked);
+
+        if (continueButton != null)
+            continueButton.onClick.AddListener(OnContinueClicked);
+
+        if (mainMenuButton != null)
+            mainMenuButton.onClick.AddListener(OnMainMenuClicked);
+
+        pausePanel.SetActive(false);
         UpdateAll();
     }
 
@@ -37,8 +50,23 @@ public class GameplayUI : MonoBehaviour
     private void OnPauseClicked()
     {
         GameManager.Instance.TogglePause();
-        if (pausePanel != null)
-            pausePanel.SetActive(GameManager.Instance.IsPaused);
+        pausePanel.SetActive(GameManager.Instance.IsPaused);
+    }
+
+    private void OnContinueClicked()
+    {
+        GameManager.Instance.TogglePause();
+        pausePanel.SetActive(false);
+    }
+
+    private void OnMainMenuClicked()
+    {
+        Time.timeScale = 1f; // 确保主菜单是正常速度
+        GameManager.Instance.SaveGame(); // 自动保存
+        GameManager.Instance.TogglePause();
+        
+        SceneManager.LoadScene("MainMenu");
+        
     }
 
     private void UpdateAll()
