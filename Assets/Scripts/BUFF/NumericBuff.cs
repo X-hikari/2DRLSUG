@@ -1,25 +1,22 @@
-using System;
-
 public class NumericBuff : BuffBase
 {
     public PlayerAttribute Attribute { get; private set; }
     public float Value { get; private set; }
 
-    // 可选的周期回调，外部传入，没传就是不周期执行
-    private Action<float, Player> onPeriodicUpdate;
+    private ISkillAction periodicAction; // 修改为统一接口
 
     private float timer = 0f;
     private float interval = 0f;
 
     public NumericBuff(string name, PlayerAttribute attribute, float value, float duration,
                       float periodicInterval = 0f,
-                      Action<float, Player> periodicAction = null)
+                      ISkillAction periodicAction = null) // 使用统一接口
         : base(name, BuffEffectType.Numeric, duration)
     {
         Attribute = attribute;
         Value = value;
         interval = periodicInterval;
-        onPeriodicUpdate = periodicAction;
+        this.periodicAction = periodicAction;
     }
 
     public override void OnApply(Player player)
@@ -31,13 +28,13 @@ public class NumericBuff : BuffBase
     {
         base.OnUpdate(deltaTime, player);
 
-        if (interval > 0f && onPeriodicUpdate != null)
+        if (interval > 0f && periodicAction != null)
         {
             timer += deltaTime;
             if (timer >= interval)
             {
                 timer -= interval;
-                onPeriodicUpdate(timer, player);
+                periodicAction.Execute(player, timer); // 统一接口调用
             }
         }
     }

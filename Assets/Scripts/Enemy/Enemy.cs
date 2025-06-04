@@ -326,10 +326,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public int GetCurrentHp()
+    {
+        return currentHp;
+    }
+
     public void TakeDamage(float dmg)
     {
         currentHp -= (int)dmg;
-        EventManager.TriggerEvent(EventType.OnEnemyKilled, this, new AttackHitEventArgs(this, (int)dmg));
+        // EventManager.TriggerEvent(EventType.OnAttackHit, this, new AttackHitEventArgs(this, (int)dmg));
         if (currentHp < 0) currentHp = 0;
     }
 

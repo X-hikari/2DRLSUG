@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public static class EventManager
 {
@@ -20,6 +21,7 @@ public static class EventManager
 
     public static void TriggerEvent(EventType eventType, object sender, EventArgs args)
     {
+        // UnityEngine.Debug.Log($"eventType: {eventType}, sender: {sender}");
         if (eventTable.ContainsKey(eventType))
             eventTable[eventType]?.Invoke(sender, args);
     }

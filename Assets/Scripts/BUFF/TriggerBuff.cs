@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 public class TriggerBuff : BuffBase
 {
@@ -8,11 +9,11 @@ public class TriggerBuff : BuffBase
 
     private string eventName;
     private EventType eventType;
-    private Action<Player, object, EventArgs> triggerEffect;
+    private ISkillAction triggerEffect; // 原来是 Action<Player, object, EventArgs>
 
     public TriggerBuff(string name, float duration,
                        string eventName, EventType eventType,
-                       Action<Player, object, EventArgs> effect,
+                       ISkillAction effect,
                        int maxCount = -1)
         : base(name, BuffEffectType.Trigger, duration)
     {
@@ -39,11 +40,9 @@ public class TriggerBuff : BuffBase
         if (triggerEffect == null || player == null)
             return;
 
-        // 这里调用你的静态判断函数，传入事件名称
         if (BuffTriggerConditions.CheckCondition(eventName, sender, args))
         {
-            triggerEffect(player, sender, args);
-
+            triggerEffect.ExecuteEvent(player, sender, args); // 统一接口调用
             currentCount++;
             if (maxTriggerCount > 0 && currentCount >= maxTriggerCount)
             {

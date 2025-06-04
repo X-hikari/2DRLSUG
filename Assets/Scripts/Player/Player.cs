@@ -29,6 +29,10 @@ public class Player : MonoBehaviour
     private Weapon CurrentWeapon => weapons[currentWeaponIndex];
     private WeaponFactory weaponFactory;
 
+    [Header("技能")]
+    List<SkillData> allSkills;
+    SkillExecutor executor;
+
     private void Awake()
     {
         controller = GetComponent<PlayerController>();
@@ -54,6 +58,9 @@ public class Player : MonoBehaviour
         {
             Debug.LogWarning("未能初始化默认武器：WeaponFactory 或默认武器名缺失！");
         }
+
+        allSkills = SkillDataLoader.LoadSkillData();
+        executor = new(this.gameObject);
     }
 
     private void Update()
@@ -67,6 +74,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchWeapon(1);
 
         // 测试技能
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            executor.ExecuteSkill(allSkills[5]);
+        }
     }
 
     public void SetStatus(PlayerStatus status, bool value)

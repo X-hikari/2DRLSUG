@@ -14,6 +14,7 @@ public static class BuffTriggerConditions
 
     public static bool CheckCondition(string eventName, object sender, EventArgs args)
     {
+        // UnityEngine.Debug.Log(conditions.Count);
         if (conditions.TryGetValue(eventName, out var cond))
         {
             return cond(sender, args);
