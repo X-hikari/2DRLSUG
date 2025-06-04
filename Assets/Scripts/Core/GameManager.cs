@@ -101,59 +101,29 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "Gameplay") // 替换为实际名称
         {
-            InitGameData();
+            // InitGameData();
         }
     }
 
-    /// <summary>
-    /// 初始化游戏内状态（从角色数据读取初始值）
-    /// </summary>
-    private void InitGameData()
-    {
-        if (SelectedPlayer != null)
-        {
-            MaxHP = SelectedPlayer.baseMaxHp;
-            CurrentHP = MaxHP;
-            CurrentLevel = SelectedPlayer.baseLevel;
-            CurrentExp = SelectedPlayer.baseExp;
-        }
-        else
-        {
-            Debug.LogWarning("GameManager: 未设置角色数据！");
-        }
+    // /// <summary>
+    // /// 初始化游戏内状态（从角色数据读取初始值）
+    // /// </summary>
+    // private void InitGameData()
+    // {
+    //     if (SelectedPlayer != null)
+    //     {
+    //         MaxHP = SelectedPlayer.baseMaxHp;
+    //         CurrentHP = MaxHP;
+    //         CurrentLevel = SelectedPlayer.baseLevel;
+    //         CurrentExp = SelectedPlayer.baseExp;
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("GameManager: 未设置角色数据！");
+    //     }
 
-        IsPaused = false;
-    }
-
-    /// <summary>
-    /// 伤害处理
-    /// </summary>
-    public void TakeDamage(int amount)
-    {
-        CurrentHP = Mathf.Max(CurrentHP - amount, 0);
-        if (CurrentHP == 0)
-        {
-            Debug.Log("Player 死亡");
-            // 后续可扩展 Game Over
-        }
-    }
-
-    /// <summary>
-    /// 增加经验
-    /// </summary>
-    public void GainExp(int amount)
-    {
-        CurrentExp += amount;
-        // 示例升级机制（可换成更复杂公式）
-        int expToNext = 100 + 20 * (CurrentLevel - 1);
-        while (CurrentExp >= expToNext)
-        {
-            CurrentExp -= expToNext;
-            CurrentLevel++;
-            Debug.Log($"升级到等级 {CurrentLevel}！");
-            expToNext = 100 + 20 * (CurrentLevel - 1);
-        }
-    }
+    //     IsPaused = false;
+    // }
 
     /// <summary>
     /// 暂停或恢复游戏（UI按钮调用）

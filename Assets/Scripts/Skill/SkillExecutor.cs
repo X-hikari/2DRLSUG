@@ -26,7 +26,7 @@ public class SkillExecutor
 
         // 法力检查
         Player player = caster.GetComponent<Player>();
-        if (player.stats.currentMana < skill.manaCost)
+        if (player.stats.GetCurrentMana() < skill.manaCost)
         {
             Debug.Log($"法力不足，无法释放技能 {skill.name}");
             return;
@@ -41,5 +41,6 @@ public class SkillExecutor
         {
             SkillInstructionParser.ParseAndExecute(instruction, caster);
         }
+        Debug.Log($"使用技能 {skill.name}, 当前法力值为 {player.stats.GetCurrentMana()}");
     }
 }

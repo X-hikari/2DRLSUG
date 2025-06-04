@@ -31,6 +31,22 @@ public class Player : MonoBehaviour
         stats = new PlayerStats(buffManager, playerStatsData);
         stateManager = GetComponent<PlayerStateManager>();
 
+        // if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
+        // {
+        //     Weapon weapon = weaponFactory.CreateWeapon(defaultWeaponName, weaponHoldPoint);
+        //     if (weapon != null)
+        //     {
+        //         weapons[0] = weapon;
+        //         currentWeaponIndex = 0;
+        //         Debug.Log($"默认武器已创建：{weapon.name}");
+        //     }
+        // }
+    }
+
+    public void Init(string defaultWeaponName)
+    {
+        // 暂时无法选择初始技能
+        Debug.Log(defaultWeaponName);
         if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
         {
             Weapon weapon = weaponFactory.CreateWeapon(defaultWeaponName, weaponHoldPoint);
@@ -41,6 +57,7 @@ public class Player : MonoBehaviour
                 Debug.Log($"默认武器已创建：{weapon.name}");
             }
         }
+        Debug.Log("玩家初始化完成");
     }
 
     public void SetStatus(PlayerStatus status, bool value)
