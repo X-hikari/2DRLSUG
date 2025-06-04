@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public void HandleInput()
     {
+        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         player.moveInput = input;
 
