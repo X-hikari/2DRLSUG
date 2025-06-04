@@ -51,7 +51,7 @@ public class PlayerRenderer : MonoBehaviour
     {
         if (player == null) return;
 
-        Vector2 input = player.InputDir;
+        Vector2 input = player.moveInput;
 
         if (input != Vector2.zero)
         {

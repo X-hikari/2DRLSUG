@@ -65,7 +65,7 @@ public class SkillInstructionParser
         float duration = (float)obj["duration"];
         BuffBase buff = null;
         SkillData SkillData;
-        ISkillAction effect;
+        ISkillAction effect = null;
         string[] messages;
         string id;
         string action;
@@ -77,9 +77,12 @@ public class SkillInstructionParser
                 PlayerAttribute attribute = (PlayerAttribute)System.Enum.Parse(typeof(PlayerAttribute), stat);
                 float interval = (float)(obj["periodicInterval"] ?? 0);
                 action = (string)(obj["periodicAction"] ?? null);
-                (id, messages) = ParseSkillCall(action);
-                SkillData = SkillInstructionParser.GetSkillById(id);
-                effect = SkillActionFactory.ParseActionFromInstruction2Periodic(SkillData, messages);
+                if (action != null)
+                {
+                    (id, messages) = ParseSkillCall(action);
+                    SkillData = SkillInstructionParser.GetSkillById(id);
+                    effect = SkillActionFactory.ParseActionFromInstruction2Periodic(SkillData, messages);
+                }
                 buff = new NumericBuff(name, attribute, value, duration, interval, effect);
                 break;
             case "Status":

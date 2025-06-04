@@ -2,23 +2,16 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerRenderer))]
 public class Player : MonoBehaviour
 {
     public PlayerStatsData playerStatsData;
     public BuffManager buffManager;
     public PlayerStats stats;
-
     public PlayerStateManager stateManager;
 
     [HideInInspector] public Vector2 moveInput;
     [HideInInspector] public Vector2 lastMoveDir;
-
-    private PlayerController controller;
-    private PlayerRenderer playerRender;
-
-    public Vector2 InputDir { get; private set; }
 
     [Header("武器")]
     public string defaultWeaponName = "Weapon_001";
@@ -26,22 +19,16 @@ public class Player : MonoBehaviour
 
     public Weapon[] weapons = new Weapon[2];
     private int currentWeaponIndex = 0;
-    private Weapon CurrentWeapon => weapons[currentWeaponIndex];
     private WeaponFactory weaponFactory;
 
     [Header("技能")]
-    List<SkillData> allSkills;
-    SkillExecutor executor;
+    public SkillData[] ownSkills = new SkillData[4];
 
     private void Awake()
     {
-        controller = GetComponent<PlayerController>();
-        playerRender = GetComponent<PlayerRenderer>();
         weaponFactory = FindObjectOfType<WeaponFactory>();
-
         buffManager = new BuffManager(this);
         stats = new PlayerStats(buffManager, playerStatsData);
-
         stateManager = GetComponent<PlayerStateManager>();
 
         if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
@@ -53,30 +40,6 @@ public class Player : MonoBehaviour
                 currentWeaponIndex = 0;
                 Debug.Log($"默认武器已创建：{weapon.name}");
             }
-        }
-        else
-        {
-            Debug.LogWarning("未能初始化默认武器：WeaponFactory 或默认武器名缺失！");
-        }
-
-        allSkills = SkillDataLoader.LoadSkillData();
-        executor = new(this.gameObject);
-    }
-
-    private void Update()
-    {
-        buffManager.Update(Time.deltaTime);
-        controller.HandleInput();
-        InputDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        playerRender.UpdateAnimation(InputDir);
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchWeapon(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchWeapon(1);
-
-        // 测试技能
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            executor.ExecuteSkill(allSkills[5]);
         }
     }
 
@@ -114,9 +77,9 @@ public class Player : MonoBehaviour
 
     public void DropCurrentWeapon()
     {
-        if (CurrentWeapon == null) return;
+        if (weapons[currentWeaponIndex] == null) return;
 
-        Debug.Log($"丢弃武器：{CurrentWeapon.name}");
+        Debug.Log($"丢弃武器：{weapons[currentWeaponIndex].name}");
         weapons[currentWeaponIndex] = null;
 
         int otherIndex = (currentWeaponIndex == 0) ? 1 : 0;
@@ -126,14 +89,11 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (stateManager.IsInvincible) return ;
+        if (stateManager.IsInvincible) return;
         bool isDead = stats.TakeDamage(damage);
         Debug.Log("Player HP: " + stats.currentHp);
 
-        if (isDead)
-        {
-            Die();
-        }
+        if (isDead) Die();
     }
 
     public void Heal(int amount)
@@ -145,7 +105,7 @@ public class Player : MonoBehaviour
     public void GainExp(int amount)
     {
         bool leveledUp = stats.GainExp(amount);
-        Debug.Log($"获得经验 {amount}，当前经验 {stats.currentExp} / {stats.ExpToNextLevel}， 当前等级 {stats.level}");
+        Debug.Log($"获得经验 {amount}，当前经验 {stats.currentExp} / {stats.ExpToNextLevel}，当前等级 {stats.level}");
         if (leveledUp)
         {
             Debug.Log($"升级啦！当前等级: {stats.level}");
@@ -155,6 +115,6 @@ public class Player : MonoBehaviour
     void Die()
     {
         Debug.Log("Player Died");
-        stats.currentHp = stats.MaxHp; // 可以复活或其他处理
+        stats.currentHp = stats.MaxHp; // 复活或其他处理
     }
 }

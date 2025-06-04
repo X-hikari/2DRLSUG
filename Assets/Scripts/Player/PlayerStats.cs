@@ -7,6 +7,7 @@ public class PlayerStats
     private BuffManager buffManager;
 
     private PlayerStatsData data;
+    private SkillExecutor executor;
 
     public int currentHp;
     public int level;
@@ -14,7 +15,6 @@ public class PlayerStats
 
     public float maxMana = 100f;
     public float currentMana = 100f;
-
 
     public PlayerStats(BuffManager buffManager, PlayerStatsData data)
     {
@@ -54,6 +54,11 @@ public class PlayerStats
         return false;
     }
 
-    
+    public bool UseMana(float amount)
+    {
+        if (currentMana < amount) return false;
+        currentMana -= amount;
+        return true;
+    }
 }
 
