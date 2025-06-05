@@ -20,6 +20,13 @@ public class PlayerStats
         level = data.baseLevel;
         currentExp = data.baseExp;
         currentHp = MaxHp;
+        GameManager.Instance.MaxHP = MaxHp;
+        GameManager.Instance.CurrentHP = currentHp;
+        GameManager.Instance.CurrentExp = currentExp;
+        GameManager.Instance.CurrentLevel = level;
+        GameManager.Instance.MaxMana = data.maxMana; ;
+        GameManager.Instance.CurrentMana = data.currentMana;
+
     }
 
     public float MoveSpeed => Mathf.Max(0, data.baseMoveSpeed + buffManager.GetNumericBuffValue(PlayerAttribute.MoveSpeed));
@@ -30,11 +37,13 @@ public class PlayerStats
     public void Heal(int amount)
     {
         currentHp = Mathf.Min(currentHp + amount, MaxHp);
+        GameManager.Instance.CurrentHP = currentHp;
     }
 
     public bool TakeDamage(float damage)
     {
         currentHp -= (int)damage;
+        GameManager.Instance.CurrentHP =currentHp; 
         return currentHp <= 0;
     }
 
@@ -45,8 +54,10 @@ public class PlayerStats
         {
             currentExp -= ExpToNextLevel;
             level++;
+            GameManager.Instance.CurrentLevel = level;
             return true; // Leveled up
         }
+        GameManager.Instance.CurrentExp = currentExp;
         return false;
     }
 
@@ -59,7 +70,9 @@ public class PlayerStats
     {
         if (data.currentMana < amount) return false;
         data.currentMana -= amount;
+        GameManager.Instance.CurrentMana = data.currentMana;
         return true;
     }
+    
 }
 

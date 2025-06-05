@@ -123,6 +123,8 @@ public class MainMenuController : MonoBehaviour
         // 刷新主选择面板里的 角色 & 武器 预览
         UpdateMainSelectCharacterPreview();
         UpdateMainSelectWeaponPreview();
+        GameManager.Instance.SelectedPlayer = selectedPlayer;
+        GameManager.Instance.SelectedWeapon = selectedWeapon;
     }
 
     /// <summary>

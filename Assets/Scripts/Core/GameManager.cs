@@ -14,10 +14,12 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public WeaponData SelectedWeapon;
 
     // —— 游戏中状态数据（UI可读取） ——
-    public int CurrentHP { get; private set; }
-    public int MaxHP { get; private set; }
-    public int CurrentLevel { get; private set; }
-    public int CurrentExp { get; private set; }
+    public int CurrentHP { get;  set; }
+    public int MaxHP { get;  set; }
+    public int CurrentLevel { get;  set; }
+    public int CurrentExp { get;  set; }
+    public float MaxMana { get; set; }
+    public float CurrentMana { get; set; }
 
     // —— 游戏运行状态 ——
     public bool IsPaused { get; private set; }

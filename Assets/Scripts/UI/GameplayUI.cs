@@ -7,6 +7,7 @@ public class GameplayUI : MonoBehaviour
 {
     [Header("UI References")]
     public Slider hpSlider;
+    public Slider manaSlider;
     public TextMeshProUGUI levelText;
     public Button pauseButton;
 
@@ -33,6 +34,7 @@ public class GameplayUI : MonoBehaviour
     {
         UpdateHPBar();
         UpdateLevel();
+        UpdateMana();
     }
 
     private void UpdateHPBar()
@@ -42,9 +44,16 @@ public class GameplayUI : MonoBehaviour
         hpSlider.value = gm.CurrentHP;
     }
 
+
     private void UpdateLevel()
     {
         levelText.text = $"Lv {GameManager.Instance.CurrentLevel}";
+    }
+    private void UpdateMana()
+    {
+        var gm = GameManager.Instance;
+        manaSlider.maxValue = gm.MaxMana;
+        manaSlider.value = gm.CurrentMana;
     }
 
     private void OnPauseClicked()
