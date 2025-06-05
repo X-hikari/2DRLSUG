@@ -22,8 +22,8 @@ public class GameplayInitializer : MonoBehaviour
             Debug.LogError("GameplayInitializer: 找不到 Player 对象！");
             return;
         }
-        Debug.Log(weaponData);
-        player.Init("Weapon_001");
+       // Debug.Log(weaponData);
+        player.Init(weaponData.weaponName);
 
         // 3. 初始化 Player 属性
         //    var playerController = playerObj.GetComponent<PlayerController>();
