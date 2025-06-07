@@ -126,6 +126,7 @@ public class Player : MonoBehaviour
         if (leveledUp)
         {
             Debug.Log($"升级啦！当前等级: {stats.level}");
+            stats.LevelUP();
         }
     }
 

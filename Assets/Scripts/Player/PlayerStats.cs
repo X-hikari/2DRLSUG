@@ -61,6 +61,14 @@ public class PlayerStats
         return false;
     }
 
+    public void LevelUP()
+    {
+        data.baseMaxHp += 20;
+        currentHp = data.baseMaxHp;
+        data.maxMana += 10;
+        data.currentMana = data.maxMana;
+    }
+
     public float GetCurrentMana()
     {
         return data.currentMana;
