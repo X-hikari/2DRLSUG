@@ -17,6 +17,8 @@ MonoBehaviour:
   baseAttack: 0
   baseLevel: 1
   baseExp: 0
+  maxMana: 100
+  currentMana: 100
   playerName: "\u5168\u80FD\u8005"
   icon: {fileID: -372329539, guid: 31a4440269dfe4741a976fdcc5498644, type: 3}
   idleSprite: {fileID: -372329539, guid: 31a4440269dfe4741a976fdcc5498644, type: 3}

@@ -37,25 +37,25 @@
   },
   {
     "id": "Skill_004",
-    "name": "Invulnerability",
+    "name": "vanish",
     "cooldown": 120,
     "manaCost": 20,
     "instructions": [
       { 
         "type": "Buff",
-        "param": "{\"type\": \"Status\", \"name\": \"invincibility\", \"status\": \"Invincible\", \"value\": \"True\", \"duration\": 5}" 
+        "param": "{\"type\": \"Status\", \"name\": \"Invisible\", \"status\": \"Invisible\", \"value\": \"True\", \"duration\": 5}" 
       }
     ]
   },
   {
     "id": "Skill_005",
-    "name": "Bloodthirst",
+    "name": "Kill invincible",
     "cooldown": 80,
     "manaCost": 30,
     "instructions": [
       { 
         "type": "Buff",
-        "param": "{\"type\": \"Trigger\", \"name\": \"suckBlood\", \"duration\": 60, \"eventName\": \"OnEnemyKilled\", \"eventType\": \"OnEnemyKilled\", \"effect\": \"Skill_002-10\", \"maxCount\": -1}" 
+        "param": "{\"type\": \"Trigger\", \"name\": \"suckBlood\", \"duration\": 60, \"eventName\": \"OnEnemyKilled\", \"eventType\": \"OnEnemyKilled\", \"effect\": \"Skill_008\", \"maxCount\": -1}" 
       }
     ]
   },
@@ -68,6 +68,30 @@
       { 
         "type": "DirectDamage",
         "param": "{\"type\": \"Damage\", \"targets\": \"Enemy\", \"condition\": \"nearest\", \"value\": 5}" 
+      }
+    ]
+  },
+  {
+    "id": "Skill_007",
+    "name": "BloodthirstAttack",
+    "cooldown": 80,
+    "manaCost": 30,
+    "instructions": [
+      { 
+        "type": "Buff",
+        "param": "{\"type\": \"Trigger\", \"name\": \"suckBlood\", \"duration\": 60, \"eventName\": \"OnAttackHit\", \"eventType\": \"OnAttackHit\", \"effect\": \"Skill_002-2\", \"maxCount\": -1}" 
+      }
+    ]
+  },
+  {
+    "id": "Skill_008",
+    "name": "Invulnerability",
+    "cooldown": 120,
+    "manaCost": 20,
+    "instructions": [
+      { 
+        "type": "Buff",
+        "param": "{\"type\": \"Status\", \"name\": \"invincibility\", \"status\": \"Invincible\", \"value\": \"True\", \"duration\": 5}" 
       }
     ]
   }

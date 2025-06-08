@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStats
@@ -26,7 +27,17 @@ public class PlayerStats
         GameManager.Instance.CurrentLevel = level;
         GameManager.Instance.MaxMana = data.maxMana; ;
         GameManager.Instance.CurrentMana = data.currentMana;
+    }
 
+    public void Init()
+    {
+        data.Init();
+        GameManager.Instance.MaxHP = MaxHp;
+        GameManager.Instance.CurrentHP = currentHp;
+        GameManager.Instance.CurrentExp = currentExp;
+        GameManager.Instance.CurrentLevel = level;
+        GameManager.Instance.MaxMana = data.maxMana; ;
+        GameManager.Instance.CurrentMana = data.currentMana;
     }
 
     public float MoveSpeed => Mathf.Max(0, data.baseMoveSpeed + buffManager.GetNumericBuffValue(PlayerAttribute.MoveSpeed));
@@ -65,8 +76,10 @@ public class PlayerStats
     {
         data.baseMaxHp += 20;
         currentHp = data.baseMaxHp;
+        GameManager.Instance.CurrentHP = currentHp;
         data.maxMana += 10;
         data.currentMana = data.maxMana;
+        GameManager.Instance.CurrentMana = data.currentMana;
     }
 
     public float GetCurrentMana()

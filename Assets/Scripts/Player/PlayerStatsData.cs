@@ -13,4 +13,15 @@ public class PlayerStatsData : ScriptableObject
     public string playerName;
     public Sprite icon;
     public Sprite idleSprite;
+
+    public void Init()
+    {
+        baseMoveSpeed = 3f;
+        baseMaxHp = 100;
+        baseAttack = 0;
+        baseLevel = 1;
+        baseExp = 0;
+        maxMana = 100f;
+        currentMana = 100f;
+    }
 }

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
         player.ownSkills[1] = allSkills[2];
         player.ownSkills[2] = allSkills[3];
         player.ownSkills[3] = allSkills[4];
+        player.ownSkills[4] = allSkills[5];
+        player.ownSkills[5] = allSkills[6];
     }
 
     private void Update()
@@ -42,9 +44,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)) player.SwitchWeapon(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) player.SwitchWeapon(1);
 
-        if (Input.GetKeyDown(KeyCode.Q)) executor.ExecuteSkill(player.ownSkills[0]);
-        if (Input.GetKeyDown(KeyCode.E)) executor.ExecuteSkill(player.ownSkills[1]);
-        if (Input.GetKeyDown(KeyCode.R)) executor.ExecuteSkill(player.ownSkills[2]);
-        if (Input.GetKeyDown(KeyCode.T)) executor.ExecuteSkill(player.ownSkills[3]);
+        if (Input.GetKeyDown(KeyCode.J)) executor.ExecuteSkill(player.ownSkills[0]);
+        if (Input.GetKeyDown(KeyCode.K)) executor.ExecuteSkill(player.ownSkills[1]);
+        if (Input.GetKeyDown(KeyCode.L)) executor.ExecuteSkill(player.ownSkills[2]);
+        if (Input.GetKeyDown(KeyCode.U)) executor.ExecuteSkill(player.ownSkills[3]);
+        if (Input.GetKeyDown(KeyCode.I)) executor.ExecuteSkill(player.ownSkills[4]);
+        if (Input.GetKeyDown(KeyCode.O)) executor.ExecuteSkill(player.ownSkills[5]);
     }
 }

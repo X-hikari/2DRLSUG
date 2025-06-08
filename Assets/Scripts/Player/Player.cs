@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     private WeaponFactory weaponFactory;
 
     [Header("技能")]
-    public SkillData[] ownSkills = new SkillData[4];
+    public SkillData[] ownSkills = new SkillData[6];
 
     private void Awake()
     {
@@ -30,23 +30,11 @@ public class Player : MonoBehaviour
         buffManager = new BuffManager(this);
         stats = new PlayerStats(buffManager, playerStatsData);
         stateManager = GetComponent<PlayerStateManager>();
-
-        // if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
-        // {
-        //     Weapon weapon = weaponFactory.CreateWeapon(defaultWeaponName, weaponHoldPoint);
-        //     if (weapon != null)
-        //     {
-        //         weapons[0] = weapon;
-        //         currentWeaponIndex = 0;
-        //         Debug.Log($"默认武器已创建：{weapon.name}");
-        //     }
-        // }
     }
 
     public void Init(string defaultWeaponName)
     {
         // 暂时无法选择初始技能
-        Debug.Log(defaultWeaponName);
         if (weaponFactory != null && !string.IsNullOrEmpty(defaultWeaponName))
         {
             Weapon weapon = weaponFactory.CreateWeapon(defaultWeaponName, weaponHoldPoint);
@@ -57,6 +45,7 @@ public class Player : MonoBehaviour
                 Debug.Log($"默认武器已创建：{weapon.name}");
             }
         }
+        stats.Init();
         Debug.Log("玩家初始化完成");
     }
 
