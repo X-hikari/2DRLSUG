@@ -160,6 +160,18 @@ MonoBehaviour:
     manaCost: 0
     category: 0
     instructions: []
+  - id: 
+    name: 
+    cooldown: 0
+    manaCost: 0
+    category: 0
+    instructions: []
+  - id: 
+    name: 
+    cooldown: 0
+    manaCost: 0
+    category: 0
+    instructions: []
 --- !u!114 &3420494091275624520
 MonoBehaviour:
   m_ObjectHideFlags: 0
