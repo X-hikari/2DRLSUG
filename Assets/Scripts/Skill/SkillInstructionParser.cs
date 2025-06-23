@@ -129,7 +129,7 @@ public class SkillInstructionParser
             return;
         }
 
-        // 用字典映射函数名到具体方法（推荐方式）
+        // 用字典映射函数名到具体方法
         var actions = new Dictionary<string, Action<int>> {
             { "Heal", player.Heal },
             // { "TakeDamage", player.TakeDamage }
@@ -176,7 +176,7 @@ public class SkillInstructionParser
                 float minHP = float.MaxValue;
                 foreach (var c in candidates)
                 {
-                    var unit = c.GetComponent<Enemy>();         // 如果后续要添加非敌人的其他物体，可以将关键属性都抽象出来作为一个单独的同名脚本
+                    var unit = c.GetComponent<Enemy>();  
                     if (unit != null && unit.GetCurrentHp() < minHP)
                     {
                         minHP = unit.GetCurrentHp();

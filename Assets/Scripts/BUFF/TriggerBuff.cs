@@ -9,7 +9,7 @@ public class TriggerBuff : BuffBase
 
     private string eventName;
     private EventType eventType;
-    private ISkillAction triggerEffect; // 原来是 Action<Player, object, EventArgs>
+    private ISkillAction triggerEffect; 
 
     public TriggerBuff(string name, float duration,
                        string eventName, EventType eventType,

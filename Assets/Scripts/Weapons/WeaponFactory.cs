@@ -74,7 +74,7 @@ public class WeaponFactory : MonoBehaviour
     /// 通过名字查找武器预制体
     /// </summary>
     /// <param name="weaponName"></param>
-    /// <returns></returns>
+    /// <returns>武器预制体</returns>
     private Weapon FindWeaponPrefabByName(string weaponName)
     {
         foreach (var prefab in weaponPrefabs)

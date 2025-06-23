@@ -21,7 +21,7 @@ public class EnemyData
     public string spriteSheet;
     public Dictionary<string, List<string>> animations;
     public List<EnemySkillData> skills;
-    public string attackType; // "melee" 或 "ranged"
+    public string attackType; //
     public float attackRange; // 攻击距离
     public List<string> bulletSprites; // 子弹动画帧名（仅远程敌人需要）
 }

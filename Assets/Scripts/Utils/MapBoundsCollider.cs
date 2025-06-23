@@ -49,9 +49,8 @@ public class MapBoundsCollider : MonoBehaviour
         var bc = go.AddComponent<BoxCollider2D>();
         bc.size = size;
         bc.offset = Vector2.zero;
-        bc.usedByComposite = false; // 如果你使用 CompositeCollider，则改为 true
+        bc.usedByComposite = false;
 
-        // 可选：把墙体放到指定物理 Layer
         go.layer = physicsLayer;
     }
 }

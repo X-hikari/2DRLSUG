@@ -107,26 +107,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // /// <summary>
-    // /// 初始化游戏内状态（从角色数据读取初始值）
-    // /// </summary>
-    // private void InitGameData()
-    // {
-    //     if (SelectedPlayer != null)
-    //     {
-    //         MaxHP = SelectedPlayer.baseMaxHp;
-    //         CurrentHP = MaxHP;
-    //         CurrentLevel = SelectedPlayer.baseLevel;
-    //         CurrentExp = SelectedPlayer.baseExp;
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("GameManager: 未设置角色数据！");
-    //     }
-
-    //     IsPaused = false;
-    // }
-
     /// <summary>
     /// 暂停或恢复游戏（UI按钮调用）
     /// </summary>

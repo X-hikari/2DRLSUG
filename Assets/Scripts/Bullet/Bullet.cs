@@ -37,7 +37,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         startPosition = transform.position;
-        // 设置 Enemy 图层
+        // 设置 Bullet 图层
         gameObject.layer = LayerMask.NameToLayer("Bullet");
     }
 
